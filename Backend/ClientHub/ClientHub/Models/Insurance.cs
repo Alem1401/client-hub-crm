@@ -5,6 +5,10 @@
         public int Id { get; set; }
 
        
+        public int AgentId { get; set; }
+        
+        public Agent Agent { get; set; }
+
         public int ClientId { get; set; }
         public Client Client { get; set; }
 
@@ -15,6 +19,6 @@
         public decimal TotalAmount { get; set; }
         public decimal Discount { get; set; }
         public decimal Surcharge { get; set; }
-        public string Notes { get; set; }
+        public string? Notes { get; set; }
     }
 }

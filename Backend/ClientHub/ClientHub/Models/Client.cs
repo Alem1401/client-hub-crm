@@ -17,7 +17,13 @@
         public DateTime DateCreated { get; set; }
         public string Status { get; set; } 
         public string? Notes { get; set; }
-        public int? AgentId { get; set; } 
+         public int? AgentId { get; set; }
+
+
+        public Agent? Agent { get; set; }
         public DateTime? LastContactDate { get; set; }
+
+        public ICollection<Insurance> Insurances { get; set; } = new List<Insurance>();
+
     }
 }
