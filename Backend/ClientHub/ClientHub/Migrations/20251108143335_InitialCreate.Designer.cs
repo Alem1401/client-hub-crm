@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ClientHub.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20251105121533_InitialCreate")]
+    [Migration("20251108143335_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -86,14 +86,6 @@ namespace ClientHub.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("IdCardNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("JMBG")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
