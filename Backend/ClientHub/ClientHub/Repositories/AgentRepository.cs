@@ -1,0 +1,66 @@
+﻿using ClientHub.Data;
+using ClientHub.DTOs;
+using ClientHub.Interfaces;
+using ClientHub.Models;
+using ClientHub.Helpers;
+using Microsoft.EntityFrameworkCore;
+
+namespace ClientHub.Repositories
+{
+    public class AgentRepository : IAgentRepository
+    {
+        private readonly DataContext _context;
+
+        public AgentRepository(DataContext context)
+        {
+            _context = context;
+        }
+
+        public async Task<Agent?> LoginAgent(LoginAgentDTO loginAgentDTO, CancellationToken ct)
+        {
+         
+            var agent = await _context.Agents.FirstOrDefaultAsync(a => a.Email == loginAgentDTO.Email, ct);
+
+            if (agent == null)
+                return null; 
+
+      
+            bool validPassword = PasswordHelper.VerifyPasswordHash(
+                loginAgentDTO.Password,
+                agent.PasswordHash,
+                agent.PasswordSalt
+            );
+
+            if (!validPassword)
+                return null; 
+
+        
+            return agent;
+        }
+
+        public async Task<Agent> RegisterAgent(RegisterAgentDTO registerAgentDTO, CancellationToken ct)
+        {
+          
+            if (await _context.Agents.AnyAsync(a => a.Email == registerAgentDTO.Email, ct))
+                throw new Exception("Email je već registrovan!");
+
+          
+            PasswordHelper.CreatePasswordHash(registerAgentDTO.Password, out byte[] hash, out byte[] salt);
+
+            
+            var newAgent = new Agent
+            {
+                FirstName = registerAgentDTO.FirstName,
+                LastName = registerAgentDTO.LastName,
+                Email = registerAgentDTO.Email,
+                PasswordHash = hash,
+                PasswordSalt = salt
+            };
+
+            _context.Agents.Add(newAgent);
+            await _context.SaveChangesAsync(ct);
+
+            return newAgent;
+        }
+    }
+}
