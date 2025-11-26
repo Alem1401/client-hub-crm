@@ -1,9 +1,9 @@
 ﻿using ClientHub.Data;
-using ClientHub.DTOs;
 using ClientHub.Interfaces;
 using ClientHub.Models;
 using ClientHub.Helpers;
 using Microsoft.EntityFrameworkCore;
+using ClientHub.DTOs.Agents;
 
 namespace ClientHub.Repositories
 {

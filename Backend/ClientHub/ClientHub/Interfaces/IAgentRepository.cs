@@ -1,4 +1,4 @@
-﻿using ClientHub.DTOs;
+﻿using ClientHub.DTOs.Agents;
 using ClientHub.Models;
 
 namespace ClientHub.Interfaces

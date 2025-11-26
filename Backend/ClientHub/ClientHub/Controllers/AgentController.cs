@@ -1,4 +1,4 @@
-﻿using ClientHub.DTOs;
+﻿using ClientHub.DTOs.Agents;
 using ClientHub.Interfaces;
 using ClientHub.Models;
 using Microsoft.AspNetCore.Http;

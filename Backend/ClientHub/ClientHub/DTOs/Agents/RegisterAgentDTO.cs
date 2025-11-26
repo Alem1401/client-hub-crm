@@ -1,4 +1,4 @@
-﻿namespace ClientHub.DTOs
+﻿namespace ClientHub.DTOs.Agents
 {
     public class RegisterAgentDTO
     {

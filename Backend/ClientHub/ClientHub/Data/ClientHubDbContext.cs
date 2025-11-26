@@ -14,8 +14,7 @@ namespace ClientHub.Data
         public DbSet<Agent> Agents { get; set; }
         public DbSet<Client> Clients { get; set; }
         public DbSet<Insurance> Insurances { get; set; }
-        public DbSet<CarInsurance> CarInsurances { get; set; }
-        public DbSet<PropertyInsurance> PropertyInsurances { get; set; }
+  
 
        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
