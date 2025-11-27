@@ -1,0 +1,66 @@
+<mat-card class="custom-card">
+  <mat-card-header class="custom-card-header">
+    <mat-card-title class="custom-card-title">Client Form</mat-card-title>
+  </mat-card-header>
+  <mat-card-content class="custom-card-content">
+    <form class="custom-form">
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="custom-form-field">
+          <mat-label>Name</mat-label>
+          <input matInput placeholder="Enter name">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="custom-form-field">
+          <mat-label>Last Name</mat-label>
+          <input matInput placeholder="Enter last name">
+        </mat-form-field>
+      </div>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="custom-form-field">
+          <mat-label>Email</mat-label>
+          <input matInput placeholder="Enter email" type="email">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="custom-form-field">
+          <mat-label>Phone Number</mat-label>
+          <input matInput placeholder="Enter phone number">
+        </mat-form-field>
+      </div>
+
+      <div class="form-row full-width">
+        <mat-form-field appearance="outline" class="custom-form-field">
+          <mat-label>Address</mat-label>
+          <input matInput placeholder="Enter address">
+        </mat-form-field>
+      </div>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="custom-form-field">
+          <mat-label>City</mat-label>
+          <input matInput placeholder="Enter city">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="custom-form-field">
+          <mat-label>Birthdate</mat-label>
+          <input matInput placeholder="Enter birthdate" type="date">
+        </mat-form-field>
+      </div>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="custom-form-field">
+          <mat-label>Status</mat-label>
+          <mat-select>
+            <mat-option value="active">Active</mat-option>
+            <mat-option value="inactive">Inactive</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="form-actions">
+        <button mat-raised-button class="mat-button-primary" type="submit">Submit</button>
+        <button mat-raised-button class="mat-button-secondary" type="button">Reset</button>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>
