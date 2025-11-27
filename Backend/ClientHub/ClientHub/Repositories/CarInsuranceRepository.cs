@@ -2,7 +2,6 @@
 using ClientHub.DTOs.CarInsurance;
 using ClientHub.Interfaces;
 using ClientHub.Models;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 
 namespace ClientHub.Repositories
@@ -20,7 +19,6 @@ namespace ClientHub.Repositories
         {
             try
             {
-                
                 bool policyExists = await _context.Insurances
                     .AnyAsync(ci => ci.PolicyNumber == carInsuranceDto.PolicyNumber, ct);
 
@@ -29,16 +27,14 @@ namespace ClientHub.Repositories
                     return -1;
                 }
 
-               
                 bool clientExists = await _context.Clients
                     .AnyAsync(c => c.Id == carInsuranceDto.ClientId, ct);
 
                 if (!clientExists)
                 {
-                    return -2; 
+                    return -2;
                 }
 
-         
                 bool agentExists = await _context.Agents
                     .AnyAsync(a => a.Id == carInsuranceDto.AgentId, ct);
 
@@ -47,16 +43,13 @@ namespace ClientHub.Repositories
                     return -3;
                 }
 
-              
                 if (carInsuranceDto.EndDate <= carInsuranceDto.StartDate)
                 {
-                    return -4; 
+                    return -4;
                 }
 
-    
                 var carInsurance = new CarInsurance
                 {
-                   
                     Bonus = carInsuranceDto.Bonus,
                     ChassisNumber = carInsuranceDto.ChassisNumber,
                     Color = carInsuranceDto.Color,
@@ -69,7 +62,6 @@ namespace ClientHub.Repositories
                     EngineCcm = carInsuranceDto.EngineCcm,
                     Type = carInsuranceDto.Type,
 
-                   
                     StartDate = carInsuranceDto.StartDate,
                     EndDate = carInsuranceDto.EndDate,
                     PolicyNumber = carInsuranceDto.PolicyNumber,
@@ -78,29 +70,24 @@ namespace ClientHub.Repositories
                     Surcharge = carInsuranceDto.Surcharge,
                     Notes = carInsuranceDto.Notes,
 
-                   
                     ClientId = carInsuranceDto.ClientId,
                     AgentId = carInsuranceDto.AgentId
                 };
 
-                
                 _context.Insurances.Add(carInsurance);
                 await _context.SaveChangesAsync(ct);
 
-               
                 return carInsurance.Id;
             }
             catch (DbUpdateException ex)
             {
-             
                 Console.WriteLine($"Database error: {ex.Message}");
                 return -5;
             }
             catch (Exception ex)
             {
-               
                 Console.WriteLine($"Error: {ex.Message}");
-                return -6; 
+                return -6;
             }
         }
 
@@ -122,7 +109,6 @@ namespace ClientHub.Repositories
 
         public async Task<IEnumerable<ResponseCarInsuranceDto>> getCarInsuranceByClientId(int id, CancellationToken ct)
         {
-         
             var responseList = await _context.Insurances
                 .OfType<CarInsurance>()
                 .Where(ci => ci.ClientId == id)
@@ -157,7 +143,6 @@ namespace ClientHub.Repositories
 
         public async Task<IEnumerable<ResponseCarInsuranceDto>> getCarInsurancesByAgentId(int id, CancellationToken ct)
         {
-          
             var responseList = await _context.Insurances
                 .OfType<CarInsurance>()
                 .Where(ci => ci.AgentId == id)
@@ -188,6 +173,46 @@ namespace ClientHub.Repositories
                 .ToListAsync(ct);
 
             return responseList;
+        }
+
+        public async Task<ResponseCarInsuranceDto?> GetCarInsuranceById(int id, CancellationToken ct)
+        {
+            var carInsurance = await _context.Insurances
+                .OfType<CarInsurance>()
+                .AsNoTracking()
+                .FirstOrDefaultAsync(ci => ci.Id == id, ct);
+
+            if (carInsurance is null)
+            {
+                return null;
+            }
+
+            var response = new ResponseCarInsuranceDto
+            {
+                Id = carInsurance.Id,
+                Bonus = carInsurance.Bonus,
+                ChassisNumber = carInsurance.ChassisNumber,
+                Color = carInsurance.Color,
+                VehicleType = carInsurance.VehicleType,
+                Purpose = carInsurance.Purpose,
+                Category = carInsurance.Category,
+                RegistrationPlate = carInsurance.RegistrationPlate,
+                ProductionYear = carInsurance.ProductionYear,
+                PowerKw = carInsurance.PowerKw,
+                EngineCcm = carInsurance.EngineCcm,
+                Type = carInsurance.Type,
+                StartDate = carInsurance.StartDate,
+                EndDate = carInsurance.EndDate,
+                PolicyNumber = carInsurance.PolicyNumber,
+                TotalAmount = carInsurance.TotalAmount,
+                Discount = carInsurance.Discount,
+                Surcharge = carInsurance.Surcharge,
+                Notes = carInsurance.Notes,
+                ClientId = carInsurance.ClientId,
+                AgentId = carInsurance.AgentId
+            };
+
+            return response;
         }
     }
 }

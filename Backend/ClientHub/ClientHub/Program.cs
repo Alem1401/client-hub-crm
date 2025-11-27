@@ -16,6 +16,7 @@ builder.Services.AddDbContext<DataContext>(options =>
 builder.Services.AddScoped<IAgentRepository, AgentRepository>();
 builder.Services.AddScoped<IClientRepository, ClientRepository>();
 builder.Services.AddScoped<ICarInsuranceRepository, CarInsuranceRepository>();
+builder.Services.AddScoped<IPropertyInsuranceRepository, PropertyInsuranceRepository>();
 
 
 var app = builder.Build();
