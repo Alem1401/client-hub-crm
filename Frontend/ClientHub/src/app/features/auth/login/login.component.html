@@ -13,26 +13,31 @@
       </mat-card-header>
 
       <mat-card-content class="login-content">
-        <form>
+        
+        <div *ngIf="loginFailed" class="login-error-message">
+          <mat-icon class="error-icon">error_outline</mat-icon>
+          <span class="error-text">Invalid email or password.</span>
+        </div>
+        <form [formGroup]="loginForm" (ngSubmit)="login()">
           <mat-form-field appearance="outline" class="form-field">
             <mat-label>Email Address</mat-label>
-            <input matInput type="email" placeholder="Enter your email" required>
+            <input matInput type="email" placeholder="Enter your email" required formControlName="email">
             <mat-icon matPrefix>email</mat-icon>
-            <mat-error>Please enter a valid email address</mat-error>
+            <mat-error *ngIf="loginForm.controls.email.touched && loginForm.controls.email.invalid">Please enter a valid email address</mat-error>
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="form-field">
             <mat-label>Password</mat-label>
-            <input matInput [type]="hidePassword ? 'password' : 'text'" placeholder="Enter your password" required>
+            <input matInput [type]="hidePassword ? 'password' : 'text'" placeholder="Enter your password" required formControlName="password">
             <mat-icon matPrefix>lock</mat-icon>
             <button mat-icon-button matSuffix type="button" (click)="hidePassword = !hidePassword">
               <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
             </button>
-            <mat-error>Password is required</mat-error>
+            <mat-error *ngIf="loginForm.controls.password.touched && loginForm.controls.password.invalid">Password is required</mat-error>
           </mat-form-field>
 
           <div class="form-options">
-            <mat-checkbox class="remember-me">Remember me</mat-checkbox>
+            <mat-checkbox class="remember-me" formControlName="rememberMe">Remember me</mat-checkbox>
             <a href="#" class="forgot-password">Forgot password?</a>
           </div>
 

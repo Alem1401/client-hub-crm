@@ -29,7 +29,7 @@ namespace ClientHub.Controllers
 
         [HttpPost("login")]
 
-        public async Task<ActionResult<Agent>> login([FromBody] LoginAgentDTO login, CancellationToken ct)
+        public async Task<ActionResult<ResponseAgentDTO>> login([FromBody] LoginAgentDTO login, CancellationToken ct)
         {
             var result = await _agentRepository.LoginAgent(login, ct);
             if (result == null)

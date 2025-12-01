@@ -13,21 +13,25 @@
       </mat-card-header>
 
       <mat-card-content class="register-content">
-        <form [formGroup]="registrationForm">
+        <!-- User Exists Error Message -->
+        <div *ngIf="userExists" class="user-exists-message">
+          <mat-icon class="error-icon">error_outline</mat-icon>
+          <span class="error-text">A user with that email address already exists.</span>
+        </div>
+        <form [formGroup]="registrationForm" (ngSubmit)="register()">
           <div class="form-row">
             <mat-form-field appearance="outline" class="form-field">
               <mat-label>First Name</mat-label>
               <input matInput placeholder="Enter first name" required formControlName="firstName">
               <mat-icon matPrefix>person</mat-icon>
-              
-              <mat-error>First name is required</mat-error>
+              <mat-error *ngIf="registrationForm.controls.firstName.touched && registrationForm.controls.firstName.invalid">First name is required</mat-error>
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="form-field">
               <mat-label>Last Name</mat-label>
               <input matInput placeholder="Enter last name" required formControlName="lastName">
               <mat-icon matPrefix>person</mat-icon>
-              <mat-error>Last name is required</mat-error>
+              <mat-error *ngIf="registrationForm.controls.lastName.touched && registrationForm.controls.lastName.invalid">Last name is required</mat-error>
             </mat-form-field>
           </div>
 
@@ -35,13 +39,7 @@
             <mat-label>Email Address</mat-label>
             <input matInput type="email" placeholder="Enter your email" required formControlName="email">
             <mat-icon matPrefix>email</mat-icon>
-            <mat-error>Please enter a valid email address</mat-error>
-          </mat-form-field>
-
-          <mat-form-field appearance="outline" class="form-field full-width">
-            <mat-label>Phone Number</mat-label>
-            <input matInput type="tel" placeholder="(555) 123-4567" formControlName="phone">
-            <mat-icon matPrefix>phone</mat-icon>
+            <mat-error *ngIf="registrationForm.controls.email.touched && registrationForm.controls.email.invalid">Please enter a valid email address</mat-error>
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="form-field full-width">
@@ -52,17 +50,18 @@
               <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
             </button>
             <mat-hint>Minimum 8 characters</mat-hint>
-            <mat-error>Password is required</mat-error>
+            <mat-error *ngIf="registrationForm.controls.password.touched && registrationForm.controls.password.invalid">Password is required</mat-error>
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="form-field full-width">
             <mat-label>Confirm Password</mat-label>
-            <input matInput [type]="hideConfirmPassword ? 'password' : 'text'" placeholder="Confirm your password" required formcontrolName="confirmPassword">
+            <input matInput [type]="hideConfirmPassword ? 'password' : 'text'" placeholder="Confirm your password" required formControlName="confirmPassword">
             <mat-icon matPrefix>lock</mat-icon>
             <button mat-icon-button matSuffix type="button" (click)="hideConfirmPassword = !hideConfirmPassword">
               <mat-icon>{{hideConfirmPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
             </button>
-            <mat-error>Passwords must match</mat-error>
+            <mat-error *ngIf="registrationForm.controls.confirmPassword.touched && registrationForm.controls.confirmPassword.invalid">Confirm password is required</mat-error>
+            <mat-error *ngIf="passwordMismatch">Passwords must match</mat-error>
           </mat-form-field>
 
           <div class="terms-section">
@@ -76,9 +75,6 @@
             Create Account
           </button>
         </form>
-
-
-   
       </mat-card-content>
 
       <mat-card-footer class="register-footer">

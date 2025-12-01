@@ -1,0 +1,117 @@
+<div class="landing-container">
+
+  <section class="hero-section">
+    <mat-toolbar class="hero-toolbar">
+      <div class="toolbar-content">
+        <div class="logo-section">
+          <mat-icon class="logo-icon">business</mat-icon>
+          <span class="brand-name">ClientHub</span>
+        </div>
+        <div class="nav-buttons">
+          <button mat-button routerLink="/login">Sign In</button>
+          <button mat-raised-button color="primary" routerLink="/register">Get Started</button>
+        </div>
+      </div>
+    </mat-toolbar>
+
+    <div class="hero-content">
+      <div class="hero-text">
+        <h1 class="hero-title">Manage Your Clients & Insurance Business with Ease</h1>
+        <p class="hero-subtitle">The all-in-one platform for modern insurance professionals. Streamline your workflow, track policies, and grow your business.</p>
+        <div class="hero-actions">
+          <button mat-raised-button color="primary" class="cta-button" routerLink="/register">
+            <mat-icon>rocket_launch</mat-icon>
+            Start Free Trial
+          </button>
+          <button mat-stroked-button class="demo-button" style="color: #38a169; border-color: #38a169;">
+            <mat-icon style="color: #38a169;">play_circle</mat-icon>
+            <span style="color: #38a169; font-weight: 600;">Watch Demo</span>
+          </button>
+        </div>
+        <p class="hero-note">No credit card required • 14-day free trial</p>
+      </div>
+      <div class="hero-image">
+        <mat-icon class="dashboard-icon">dashboard</mat-icon>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="features-section">
+    <div class="section-header">
+      <h2 class="section-title">Everything You Need to Succeed</h2>
+      <p class="section-subtitle">Powerful features designed for insurance professionals</p>
+    </div>
+
+    <div class="features-grid">
+      <mat-card class="feature-card" *ngFor="let feature of features">
+        <div class="feature-icon-wrapper">
+          <mat-icon class="feature-icon">{{feature.icon}}</mat-icon>
+        </div>
+        <mat-card-content>
+          <h3 class="feature-title">{{feature.title}}</h3>
+          <p class="feature-description">{{feature.description}}</p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </section>
+
+
+  <section class="stats-section">
+    <div class="stats-container">
+      <div class="stat-item">
+        <h3 class="stat-number">10,000+</h3>
+        <p class="stat-label">Active Users</p>
+      </div>
+      <mat-divider vertical></mat-divider>
+      <div class="stat-item">
+        <h3 class="stat-number">500K+</h3>
+        <p class="stat-label">Clients Managed</p>
+      </div>
+      <mat-divider vertical></mat-divider>
+      <div class="stat-item">
+        <h3 class="stat-number">99.9%</h3>
+        <p class="stat-label">Uptime</p>
+      </div>
+      <mat-divider vertical></mat-divider>
+      <div class="stat-item">
+        <h3 class="stat-number">24/7</h3>
+        <p class="stat-label">Support</p>
+      </div>
+    </div>
+  </section>
+
+ 
+  <section class="cta-section">
+    <div class="cta-content">
+      <h2 class="cta-title">Ready to Transform Your Business?</h2>
+      <p class="cta-subtitle">Join thousands of insurance professionals who trust ClientHub</p>
+      <div class="cta-buttons">
+        <button mat-raised-button color="primary" class="cta-primary" routerLink="/register">
+          <mat-icon>arrow_forward</mat-icon>
+          Get Started Now
+        </button>
+        <button mat-stroked-button class="cta-secondary" routerLink="/login">
+          Sign In
+        </button>
+      </div>
+    </div>
+  </section>
+
+ 
+  <footer class="landing-footer">
+    <div class="footer-content">
+      <div class="footer-brand">
+        <div class="logo-section">
+          <mat-icon class="footer-logo-icon">business</mat-icon>
+          <span class="footer-brand-name">ClientHub</span>
+        </div>
+        <p class="footer-tagline">Empowering insurance professionals worldwide</p>
+      </div>
+    </div>
+    <mat-divider></mat-divider>
+    <div class="footer-bottom">
+      <p>© 2025 ClientHub. All rights reserved.</p>
+    </div>
+  </footer>
+</div>

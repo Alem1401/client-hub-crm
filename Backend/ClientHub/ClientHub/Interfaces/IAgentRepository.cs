@@ -8,7 +8,7 @@ namespace ClientHub.Interfaces
 
         public Task<Agent> RegisterAgent(RegisterAgentDTO registerAgentDTO, CancellationToken ct);
 
-        public Task<Agent?> LoginAgent(LoginAgentDTO loginAgentDTO, CancellationToken ct);
+        public Task<ResponseAgentDTO?> LoginAgent(LoginAgentDTO loginAgentDTO, CancellationToken ct);
 
         public Task<bool> AgentExists (string email, CancellationToken ct);
     }

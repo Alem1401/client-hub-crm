@@ -16,7 +16,7 @@ namespace ClientHub.Repositories
             _context = context;
         }
 
-        public async Task<Agent?> LoginAgent(LoginAgentDTO loginAgentDTO, CancellationToken ct)
+        public async Task<ResponseAgentDTO?> LoginAgent(LoginAgentDTO loginAgentDTO, CancellationToken ct)
         {
          
             var agent = await _context.Agents.FirstOrDefaultAsync(a => a.Email == loginAgentDTO.Email, ct);
@@ -34,8 +34,15 @@ namespace ClientHub.Repositories
             if (!validPassword)
                 return null; 
 
-        
-            return agent;
+          ResponseAgentDTO  response = new ResponseAgentDTO
+            {
+                Id = agent.Id,
+                FirstName = agent.FirstName,
+                LastName = agent.LastName,
+                Email = agent.Email
+            };
+
+            return response;
         }
 
         public async Task<Agent> RegisterAgent(RegisterAgentDTO registerAgentDTO, CancellationToken ct)
