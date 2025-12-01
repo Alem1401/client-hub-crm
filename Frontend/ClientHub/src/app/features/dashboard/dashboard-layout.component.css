@@ -1,0 +1,369 @@
+.dashboard-container {
+  height: 100vh;
+  width: 100%;
+}
+
+/* Sidenav Styles */
+.dashboard-sidenav {
+  width: 280px;
+  background: linear-gradient(180deg, #2f855a 0%, #38a169 100%);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  border-right: none;
+}
+
+.sidenav-header {
+  padding: 24px 20px;
+}
+
+.logo-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-icon {
+  font-size: 36px;
+  width: 36px;
+  height: 36px;
+  color: white;
+}
+
+.brand-name {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0;
+  color: white;
+}
+
+/* User Profile Section */
+.user-profile {
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.user-avatar {
+  flex-shrink: 0;
+}
+
+.user-avatar mat-icon {
+  font-size: 48px;
+  width: 48px;
+  height: 48px;
+  color: white;
+}
+
+.user-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.user-name {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: white;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.user-role {
+  margin: 4px 0 0 0;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.8);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.user-menu-btn {
+  flex-shrink: 0;
+  color: white;
+}
+
+/* Navigation List */
+.nav-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px 0;
+}
+
+.nav-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.nav-list::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.nav-list::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 3px;
+}
+
+.nav-section {
+  margin-bottom: 16px;
+}
+
+.nav-section-title {
+  padding: 8px 20px;
+  margin: 8px 0;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.7);
+  letter-spacing: 0.5px;
+}
+
+.nav-item {
+  color: rgba(255, 255, 255, 0.9);
+  margin: 4px 12px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  height: 48px;
+}
+
+.nav-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+}
+
+.nav-item.active {
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+  font-weight: 600;
+}
+
+.nav-item ::ng-deep .mat-mdc-list-item-icon {
+  color: rgba(255, 255, 255, 0.9);
+  margin-right: 12px;
+}
+
+.nav-item.active ::ng-deep .mat-mdc-list-item-icon {
+  color: white;
+}
+
+.badge {
+  background: #e53e3e;
+  color: white;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* Sidenav Footer */
+.sidenav-footer {
+  padding: 20px;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.1);
+  margin-top: auto;
+}
+
+.footer-text {
+  margin: 0;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.footer-version {
+  margin: 4px 0 0 0;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* Main Content Area */
+.dashboard-content {
+  display: flex;
+  flex-direction: column;
+  background-color: #f5f7fa;
+}
+
+/* Top Toolbar */
+.top-toolbar {
+  background: white;
+  color: #2d3748;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  height: 64px;
+}
+
+.menu-toggle {
+  color: #2d3748;
+}
+
+.toolbar-spacer {
+  flex: 1;
+}
+
+.top-toolbar button {
+  color: #2d3748;
+}
+
+.user-avatar-btn mat-icon {
+  font-size: 32px;
+  width: 32px;
+  height: 32px;
+  color: #38a169;
+}
+
+/* Page Content */
+.page-content {
+  flex: 1;
+  padding: 24px;
+  overflow-y: auto;
+}
+
+/* Menu Styles */
+.user-menu {
+  margin-top: 8px;
+}
+
+.notification-menu {
+  width: 350px;
+  max-height: 500px;
+}
+
+.notification-header {
+  padding: 16px 16px 12px 16px;
+}
+
+.notification-header h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #2d3748;
+}
+
+.notification-item {
+  padding: 12px 16px;
+  height: auto;
+  line-height: normal;
+}
+
+.notification-item mat-icon {
+  color: #38a169;
+  margin-right: 12px;
+  align-self: flex-start;
+  margin-top: 2px;
+}
+
+.notification-content {
+  flex: 1;
+}
+
+.notification-title {
+  margin: 0;
+  font-size: 14px;
+  color: #2d3748;
+  font-weight: 500;
+}
+
+.notification-time {
+  margin: 4px 0 0 0;
+  font-size: 12px;
+  color: #718096;
+}
+
+.view-all-btn {
+  width: 100%;
+  text-align: center;
+  color: #38a169;
+  font-weight: 600;
+}
+
+.user-menu-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  background: #f7fafc;
+}
+
+.user-menu-avatar {
+  font-size: 40px;
+  width: 40px;
+  height: 40px;
+  color: #38a169;
+}
+
+.user-menu-name {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #2d3748;
+}
+
+.user-menu-email {
+  margin: 4px 0 0 0;
+  font-size: 12px;
+  color: #718096;
+}
+
+/* Material Overrides */
+::ng-deep .mat-mdc-list-item {
+  --mdc-list-list-item-hover-state-layer-color: transparent;
+}
+
+::ng-deep .mat-drawer-inner-container {
+  display: flex;
+  flex-direction: column;
+}
+
+::ng-deep .mat-divider {
+  border-top-color: rgba(255, 255, 255, 0.2);
+}
+
+::ng-deep .mat-mdc-menu-panel {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+/* Badge Styling */
+::ng-deep .mat-badge-warn .mat-badge-content {
+  background-color: #e53e3e;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .dashboard-sidenav {
+    width: 260px;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-sidenav {
+    width: 100%;
+    max-width: 280px;
+  }
+
+  .page-content {
+    padding: 16px;
+  }
+
+  .notification-menu {
+    width: 300px;
+  }
+}
+
+/* Animations */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.nav-item {
+  animation: slideIn 0.3s ease-out;
+}

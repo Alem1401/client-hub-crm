@@ -41,8 +41,7 @@ namespace ClientHub.Repositories
         public async Task<Agent> RegisterAgent(RegisterAgentDTO registerAgentDTO, CancellationToken ct)
         {
           
-            if (await _context.Agents.AnyAsync(a => a.Email == registerAgentDTO.Email, ct))
-                throw new Exception("Email je već registrovan!");
+          
 
           
             PasswordHelper.CreatePasswordHash(registerAgentDTO.Password, out byte[] hash, out byte[] salt);
@@ -62,5 +61,12 @@ namespace ClientHub.Repositories
 
             return newAgent;
         }
+
+        public async Task<bool> AgentExists(string email, CancellationToken ct)
+        {
+          return await _context.Agents.AnyAsync(a => a.Email == email, ct);
+        }
+
+       
     }
 }

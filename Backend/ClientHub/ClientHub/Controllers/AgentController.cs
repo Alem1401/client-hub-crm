@@ -36,5 +36,12 @@ namespace ClientHub.Controllers
                 return Unauthorized("Wrong email or password");
             return Ok(result);
         }
+
+        [HttpGet("{email}")]
+
+        public async Task<ActionResult<bool>> agentExists(string email,CancellationToken ct)
+        {
+            return await _agentRepository.AgentExists(email, ct);
+        }
     }
 }

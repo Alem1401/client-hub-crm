@@ -1,0 +1,197 @@
+<mat-sidenav-container class="dashboard-container">
+  <!-- Side Navigation -->
+  <mat-sidenav #sidenav mode="side" [opened]="isSidenavOpen" class="dashboard-sidenav">
+    <!-- Logo & Brand -->
+    <div class="sidenav-header">
+      <div class="logo-section">
+        <mat-icon class="logo-icon">business</mat-icon>
+        <h2 class="brand-name">ClientHub</h2>
+      </div>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <!-- User Profile Section -->
+    <div class="user-profile">
+      <div class="user-avatar">
+        <mat-icon>account_circle</mat-icon>
+      </div>
+      <div class="user-info">
+        <h3 class="user-name">John Doe</h3>
+        <p class="user-role">Administrator</p>
+      </div>
+      <button mat-icon-button [matMenuTriggerFor]="userMenu" class="user-menu-btn">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #userMenu="matMenu" class="user-menu">
+        <button mat-menu-item>
+          <mat-icon>person</mat-icon>
+          <span>Profile</span>
+        </button>
+        <button mat-menu-item>
+          <mat-icon>settings</mat-icon>
+          <span>Settings</span>
+        </button>
+        <mat-divider></mat-divider>
+        <button mat-menu-item>
+          <mat-icon>logout</mat-icon>
+          <span>Logout</span>
+        </button>
+      </mat-menu>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <!-- Navigation Menu -->
+    <mat-nav-list class="nav-list">
+      <div class="nav-section">
+        <h3 class="nav-section-title">Main</h3>
+        
+        <a mat-list-item routerLink="/dashboard" routerLinkActive="active" class="nav-item">
+          <mat-icon matListItemIcon>dashboard</mat-icon>
+          <span matListItemTitle>Dashboard</span>
+        </a>
+
+        <a mat-list-item routerLink="/clients" routerLinkActive="active" class="nav-item">
+          <mat-icon matListItemIcon>people</mat-icon>
+          <span matListItemTitle>Clients</span>
+          <span matListItemMeta class="badge">24</span>
+        </a>
+
+        <a mat-list-item routerLink="/agents" routerLinkActive="active" class="nav-item">
+          <mat-icon matListItemIcon>support_agent</mat-icon>
+          <span matListItemTitle>Agents</span>
+        </a>
+
+        <a mat-list-item routerLink="/insurances" routerLinkActive="active" class="nav-item">
+          <mat-icon matListItemIcon>shield</mat-icon>
+          <span matListItemTitle>Insurances</span>
+        </a>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <div class="nav-section">
+        <h3 class="nav-section-title">Analytics</h3>
+        
+        <a mat-list-item routerLink="/reports" routerLinkActive="active" class="nav-item">
+          <mat-icon matListItemIcon>assessment</mat-icon>
+          <span matListItemTitle>Reports</span>
+        </a>
+
+        <a mat-list-item routerLink="/analytics" routerLinkActive="active" class="nav-item">
+          <mat-icon matListItemIcon>analytics</mat-icon>
+          <span matListItemTitle>Analytics</span>
+        </a>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <div class="nav-section">
+        <h3 class="nav-section-title">Settings</h3>
+        
+        <a mat-list-item routerLink="/settings" routerLinkActive="active" class="nav-item">
+          <mat-icon matListItemIcon>settings</mat-icon>
+          <span matListItemTitle>Settings</span>
+        </a>
+
+        <a mat-list-item routerLink="/help" routerLinkActive="active" class="nav-item">
+          <mat-icon matListItemIcon>help</mat-icon>
+          <span matListItemTitle>Help & Support</span>
+        </a>
+      </div>
+    </mat-nav-list>
+
+    <!-- Footer -->
+    <div class="sidenav-footer">
+      <p class="footer-text">© 2025 ClientHub</p>
+      <p class="footer-version">Version 1.0.0</p>
+    </div>
+  </mat-sidenav>
+
+  <!-- Main Content Area -->
+  <mat-sidenav-content class="dashboard-content">
+    <!-- Top Toolbar -->
+    <mat-toolbar class="top-toolbar">
+      <button mat-icon-button (click)="isSidenavOpen = !isSidenavOpen" class="menu-toggle">
+        <mat-icon>menu</mat-icon>
+      </button>
+
+      <span class="toolbar-spacer"></span>
+
+      <!-- Search -->
+      <button mat-icon-button matTooltip="Search">
+        <mat-icon>search</mat-icon>
+      </button>
+
+      <!-- Notifications -->
+      <button mat-icon-button [matMenuTriggerFor]="notificationMenu" matTooltip="Notifications">
+        <mat-icon matBadge="3" matBadgeColor="warn" matBadgeSize="small">notifications</mat-icon>
+      </button>
+      <mat-menu #notificationMenu="matMenu" class="notification-menu">
+        <div class="notification-header">
+          <h3>Notifications</h3>
+        </div>
+        <mat-divider></mat-divider>
+        <button mat-menu-item class="notification-item">
+          <mat-icon>person_add</mat-icon>
+          <div class="notification-content">
+            <p class="notification-title">New client added</p>
+            <p class="notification-time">5 minutes ago</p>
+          </div>
+        </button>
+        <button mat-menu-item class="notification-item">
+          <mat-icon>update</mat-icon>
+          <div class="notification-content">
+            <p class="notification-title">Insurance policy updated</p>
+            <p class="notification-time">1 hour ago</p>
+          </div>
+        </button>
+        <button mat-menu-item class="notification-item">
+          <mat-icon>task_alt</mat-icon>
+          <div class="notification-content">
+            <p class="notification-title">Task completed</p>
+            <p class="notification-time">2 hours ago</p>
+          </div>
+        </button>
+        <mat-divider></mat-divider>
+        <button mat-menu-item class="view-all-btn">
+          View all notifications
+        </button>
+      </mat-menu>
+
+      <!-- User Profile Menu -->
+      <button mat-icon-button [matMenuTriggerFor]="topUserMenu" class="user-avatar-btn">
+        <mat-icon>account_circle</mat-icon>
+      </button>
+      <mat-menu #topUserMenu="matMenu">
+        <div class="user-menu-header">
+          <mat-icon class="user-menu-avatar">account_circle</mat-icon>
+          <div>
+            <p class="user-menu-name">John Doe</p>
+            <p class="user-menu-email">john.doe@clienthub.com</p>
+          </div>
+        </div>
+        <mat-divider></mat-divider>
+        <button mat-menu-item>
+          <mat-icon>person</mat-icon>
+          <span>My Profile</span>
+        </button>
+        <button mat-menu-item>
+          <mat-icon>settings</mat-icon>
+          <span>Account Settings</span>
+        </button>
+        <mat-divider></mat-divider>
+        <button mat-menu-item>
+          <mat-icon>logout</mat-icon>
+          <span>Logout</span>
+        </button>
+      </mat-menu>
+    </mat-toolbar>
+
+    <!-- Page Content -->
+    <div class="page-content">
+      <app-client-form/>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

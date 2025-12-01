@@ -1,0 +1,66 @@
+<div class="login-container">
+  <div class="login-wrapper">
+    <mat-card class="login-card">
+      <mat-card-header class="login-header">
+        <div class="header-content">
+          <div class="logo-section">
+            <mat-icon class="logo-icon">business</mat-icon>
+            <h1 class="brand-name">ClientHub</h1>
+          </div>
+          <mat-card-title>Welcome Back</mat-card-title>
+          <mat-card-subtitle>Sign in to continue to your account</mat-card-subtitle>
+        </div>
+      </mat-card-header>
+
+      <mat-card-content class="login-content">
+        <form>
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Email Address</mat-label>
+            <input matInput type="email" placeholder="Enter your email" required>
+            <mat-icon matPrefix>email</mat-icon>
+            <mat-error>Please enter a valid email address</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Password</mat-label>
+            <input matInput [type]="hidePassword ? 'password' : 'text'" placeholder="Enter your password" required>
+            <mat-icon matPrefix>lock</mat-icon>
+            <button mat-icon-button matSuffix type="button" (click)="hidePassword = !hidePassword">
+              <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+            <mat-error>Password is required</mat-error>
+          </mat-form-field>
+
+          <div class="form-options">
+            <mat-checkbox class="remember-me">Remember me</mat-checkbox>
+            <a href="#" class="forgot-password">Forgot password?</a>
+          </div>
+
+          <button mat-raised-button color="primary" type="submit" class="login-button">
+            <mat-icon>login</mat-icon>
+            Sign In
+          </button>
+        </form>
+
+        <mat-divider class="divider-text">
+          <span>OR</span>
+        </mat-divider>
+
+        <div class="social-login">
+          <button mat-stroked-button class="social-button google-button">
+            <mat-icon>g_translate</mat-icon>
+            Continue with Google
+          </button>
+          <button mat-stroked-button class="social-button microsoft-button">
+            <mat-icon>business</mat-icon>
+            Continue with Microsoft
+          </button>
+        </div>
+      </mat-card-content>
+
+      <mat-card-footer class="login-footer">
+        <p>Don't have an account? <a routerLink="/register" class="register-link">Sign up</a></p>
+      </mat-card-footer>
+    </mat-card>
+  </div>
+</div>

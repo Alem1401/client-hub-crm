@@ -1,0 +1,89 @@
+<div class="register-container">
+  <div class="register-wrapper">
+    <mat-card class="register-card">
+      <mat-card-header class="register-header">
+        <div class="header-content">
+          <div class="logo-section">
+            <mat-icon class="logo-icon">business</mat-icon>
+            <h1 class="brand-name">ClientHub</h1>
+          </div>
+          <mat-card-title>Create Account</mat-card-title>
+          <mat-card-subtitle>Get started with your free account</mat-card-subtitle>
+        </div>
+      </mat-card-header>
+
+      <mat-card-content class="register-content">
+        <form [formGroup]="registrationForm">
+          <div class="form-row">
+            <mat-form-field appearance="outline" class="form-field">
+              <mat-label>First Name</mat-label>
+              <input matInput placeholder="Enter first name" required formControlName="firstName">
+              <mat-icon matPrefix>person</mat-icon>
+              
+              <mat-error>First name is required</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="form-field">
+              <mat-label>Last Name</mat-label>
+              <input matInput placeholder="Enter last name" required formControlName="lastName">
+              <mat-icon matPrefix>person</mat-icon>
+              <mat-error>Last name is required</mat-error>
+            </mat-form-field>
+          </div>
+
+          <mat-form-field appearance="outline" class="form-field full-width">
+            <mat-label>Email Address</mat-label>
+            <input matInput type="email" placeholder="Enter your email" required formControlName="email">
+            <mat-icon matPrefix>email</mat-icon>
+            <mat-error>Please enter a valid email address</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="form-field full-width">
+            <mat-label>Phone Number</mat-label>
+            <input matInput type="tel" placeholder="(555) 123-4567" formControlName="phone">
+            <mat-icon matPrefix>phone</mat-icon>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="form-field full-width">
+            <mat-label>Password</mat-label>
+            <input matInput [type]="hidePassword ? 'password' : 'text'" placeholder="Create a password" required formControlName="password">
+            <mat-icon matPrefix>lock</mat-icon>
+            <button mat-icon-button matSuffix type="button" (click)="hidePassword = !hidePassword">
+              <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+            <mat-hint>Minimum 8 characters</mat-hint>
+            <mat-error>Password is required</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="form-field full-width">
+            <mat-label>Confirm Password</mat-label>
+            <input matInput [type]="hideConfirmPassword ? 'password' : 'text'" placeholder="Confirm your password" required formcontrolName="confirmPassword">
+            <mat-icon matPrefix>lock</mat-icon>
+            <button mat-icon-button matSuffix type="button" (click)="hideConfirmPassword = !hideConfirmPassword">
+              <mat-icon>{{hideConfirmPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+            <mat-error>Passwords must match</mat-error>
+          </mat-form-field>
+
+          <div class="terms-section">
+            <mat-checkbox class="terms-checkbox" required>
+              I agree to the <a href="#" class="terms-link">Terms of Service</a> and <a href="#" class="terms-link">Privacy Policy</a>
+            </mat-checkbox>
+          </div>
+
+          <button mat-raised-button color="primary" type="submit" class="register-button">
+            <mat-icon>person_add</mat-icon>
+            Create Account
+          </button>
+        </form>
+
+
+   
+      </mat-card-content>
+
+      <mat-card-footer class="register-footer">
+        <p>Already have an account? <a routerLink="/login" class="login-link">Sign in</a></p>
+      </mat-card-footer>
+    </mat-card>
+  </div>
+</div>
