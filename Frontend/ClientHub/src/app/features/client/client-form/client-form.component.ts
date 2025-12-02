@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -10,6 +10,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
+import { createClientDto } from '../../../dtos/client/create-client.dto';
 
 @Component({
   selector: 'app-client-form',
@@ -31,5 +32,22 @@ import { MatDividerModule } from '@angular/material/divider';
   styleUrls: ['./client-form.component.css']
 })
 export class ClientFormComponent {
+  clientForm: FormGroup = new FormGroup({
+    firstName: new FormControl('', { validators: Validators.required }),
+    lastName: new FormControl('', { validators: Validators.required }),
+    email: new FormControl('', { validators: [Validators.email] }),
+    phoneNumber: new FormControl('', {}),
+    address: new FormControl('', {}),
+    city: new FormControl('', { validators: Validators.required }),
+    dateOfBirth: new FormControl(null, { validators: Validators.required }),
+    status: new FormControl('Active', { validators: Validators.required }),
+    lastContactDate: new FormControl(null, {}),
+    notes: new FormControl('', {}),
+  });
+
+
+
+
 
 }
+

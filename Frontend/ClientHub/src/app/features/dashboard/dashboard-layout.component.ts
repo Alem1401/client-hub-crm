@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component,inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatListModule } from '@angular/material/list';
@@ -11,6 +11,10 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ClientFormComponent } from "../client/client-form/client-form.component";
+import { OnInit } from '@angular/core';
+import { GlobalService } from '../../services/global-service';
+import { responseAgentDto } from '../../dtos/agent/response-agent.dto';
+
 
 @Component({
   selector: 'app-dashboard-layout',
@@ -34,6 +38,20 @@ import { ClientFormComponent } from "../client/client-form/client-form.component
 })
 export class DashboardLayoutComponent {
   isSidenavOpen = true;
-  
-  // Logic implementation will be added here
+  router = inject(Router)
+  globalService = inject(GlobalService);
+  currentUser : responseAgentDto | null = null;
+ // ngOnInit(): void {
+   // this.globalService.currentUser$.subscribe({
+     // next : (response) =>{ this.currentUser= response
+      //if(!response){
+        //this.router.navigate([""]);
+
+
+     // }  
+      //}
+      
+    //})
+  //}
+
 }

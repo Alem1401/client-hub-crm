@@ -1,7 +1,7 @@
 <mat-sidenav-container class="dashboard-container">
-  <!-- Side Navigation -->
+
   <mat-sidenav #sidenav mode="side" [opened]="isSidenavOpen" class="dashboard-sidenav">
-    <!-- Logo & Brand -->
+ 
     <div class="sidenav-header">
       <div class="logo-section">
         <mat-icon class="logo-icon">business</mat-icon>
@@ -11,14 +11,14 @@
 
     <mat-divider></mat-divider>
 
-    <!-- User Profile Section -->
+    
     <div class="user-profile">
       <div class="user-avatar">
         <mat-icon>account_circle</mat-icon>
       </div>
       <div class="user-info">
-        <h3 class="user-name">John Doe</h3>
-        <p class="user-role">Administrator</p>
+        <h3 class="user-name">{{currentUser?.firstName + " " + currentUser?.lastName}}</h3>
+        <p class="user-role">Agent</p>
       </div>
       <button mat-icon-button [matMenuTriggerFor]="userMenu" class="user-menu-btn">
         <mat-icon>more_vert</mat-icon>
@@ -52,7 +52,7 @@
           <span matListItemTitle>Dashboard</span>
         </a>
 
-        <a mat-list-item routerLink="/clients" routerLinkActive="active" class="nav-item">
+        <a mat-list-item routerLink="clients" routerLinkActive="active" class="nav-item">
           <mat-icon matListItemIcon>people</mat-icon>
           <span matListItemTitle>Clients</span>
           <span matListItemMeta class="badge">24</span>
@@ -111,7 +111,7 @@
 
   <!-- Main Content Area -->
   <mat-sidenav-content class="dashboard-content">
-    <!-- Top Toolbar -->
+  
     <mat-toolbar class="top-toolbar">
       <button mat-icon-button (click)="isSidenavOpen = !isSidenavOpen" class="menu-toggle">
         <mat-icon>menu</mat-icon>
@@ -119,12 +119,12 @@
 
       <span class="toolbar-spacer"></span>
 
-      <!-- Search -->
+
       <button mat-icon-button matTooltip="Search">
         <mat-icon>search</mat-icon>
       </button>
 
-      <!-- Notifications -->
+   
       <button mat-icon-button [matMenuTriggerFor]="notificationMenu" matTooltip="Notifications">
         <mat-icon matBadge="3" matBadgeColor="warn" matBadgeSize="small">notifications</mat-icon>
       </button>
@@ -191,7 +191,7 @@
 
     <!-- Page Content -->
     <div class="page-content">
-      <app-client-form/>
+      <router-outlet/>
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>
