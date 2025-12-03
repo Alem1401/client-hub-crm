@@ -142,17 +142,21 @@
 }
 
 .submit-button {
-  padding: 0 32px;
-  height: 44px;
-  font-weight: 600;
+  padding: 0 28px;
+  height: 48px;
+  font-weight: 700;
   font-size: 15px;
-  box-shadow: 0 4px 12px rgba(56, 161, 105, 0.3);
-  transition: all 0.3s ease;
+  border-radius: 10px;
+  color: #ffffff !important;
+  background-color: #38a169 !important;
+  box-shadow: 0 6px 18px rgba(56, 161, 105, 0.25);
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
 }
 
 .submit-button:hover {
-  box-shadow: 0 6px 20px rgba(56, 161, 105, 0.4);
+  box-shadow: 0 10px 30px rgba(56, 161, 105, 0.32);
   transform: translateY(-2px);
+  background-color: #2f855a !important;
 }
 
 .submit-button ::ng-deep .mat-icon {
@@ -160,17 +164,21 @@
 }
 
 .cancel-button {
-  padding: 0 32px;
-  height: 44px;
-  font-weight: 600;
+  padding: 0 26px;
+  height: 48px;
+  font-weight: 700;
   font-size: 15px;
-  border: 2px solid #e2e8f0;
-  transition: all 0.3s ease;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #38a169 !important;
+  border: 2px solid rgba(56, 161, 105, 0.18);
+  transition: transform 0.12s ease, background-color 0.12s ease, border-color 0.12s ease;
 }
 
 .cancel-button:hover {
-  background-color: #f7fafc;
-  border-color: #cbd5e0;
+  background-color: rgba(56, 161, 105, 0.06);
+  border-color: rgba(56, 161, 105, 0.28);
+  transform: translateY(-1px);
 }
 
 .cancel-button ::ng-deep .mat-icon {
@@ -248,3 +256,109 @@
 .form-card {
   animation: fadeIn 0.5s ease-out;
 }
+
+/* Datepicker & Select Theming (scoped) */
+/* Note: overlay panels (datepicker, select panel) are appended to the global overlay container.
+   Use global ::ng-deep selectors (no :host ancestor) so styles apply to overlays. Keep :host
+   for in-component elements. */
+
+/* Soft yellow background for the datepicker panel to match request */
+::ng-deep .mat-datepicker-content,
+::ng-deep .mat-calendar,
+::ng-deep .mat-mdc-datepicker-content {
+  background: #ffffff !important; /* use white background to match site */
+  color: #1a202c !important;
+  border-radius: 8px;
+}
+
+/* Make each date cell circular and show a subtle green ring on hover */
+::ng-deep .mat-calendar-body-cell .mat-calendar-body-cell-content,
+::ng-deep .mat-calendar-table .mat-calendar-body-cell-content {
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.18s ease;
+}
+
+::ng-deep .mat-calendar-body-cell:hover .mat-calendar-body-cell-content,
+::ng-deep .mat-calendar-table .mat-calendar-body-cell:hover .mat-calendar-body-cell-content {
+  background: rgba(56, 161, 105, 0.12) !important; /* soft green fill */
+  box-shadow: 0 0 0 3px rgba(56, 161, 105, 0.08) inset;
+  transform: translateY(-2px);
+}
+
+/* Selected/active date should be a strong green circle */
+::ng-deep .mat-calendar-body-selected .mat-calendar-body-cell-content,
+::ng-deep .mat-calendar-body-active .mat-calendar-body-cell-content {
+  background: #38a169 !important;
+  color: #ffffff !important;
+  box-shadow: none !important;
+}
+
+/* Today's date subtle outline */
+::ng-deep .mat-calendar-body-today .mat-calendar-body-cell-content {
+  box-shadow: 0 0 0 2px rgba(56, 161, 105, 0.12) inset;
+}
+
+/* Status (mat-select) fixes: ensure background, outline and panel match theme */
+:host ::ng-deep .mat-mdc-select .mat-mdc-select-trigger,
+:host ::ng-deep .mat-select-trigger {
+  background: #ffffff;
+  border-radius: 8px;
+}
+
+/* Focused select shows green outline (in-component trigger) */
+:host ::ng-deep .mat-mdc-select.mat-mdc-select-focused .mat-mdc-select-trigger,
+:host ::ng-deep .mat-select.mat-focused .mat-select-trigger {
+  box-shadow: 0 0 0 4px rgba(56, 161, 105, 0.06);
+  border: 2px solid #38a169;
+}
+
+/* Panel option hover and selected (panel is global overlay so use ::ng-deep) */
+::ng-deep .mat-mdc-select-panel,
+::ng-deep .mat-select-panel {
+  background: #ffffff !important;
+  border-radius: 8px;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.12);
+}
+
+::ng-deep .mat-mdc-select-panel .mat-mdc-list-item:hover,
+::ng-deep .mat-select-panel .mat-option:hover {
+  background: rgba(56, 161, 105, 0.06) !important;
+}
+
+::ng-deep .mat-mdc-select-panel .mat-mdc-list-item.mat-mdc-selected,
+::ng-deep .mat-select-panel .mat-option.mat-selected {
+  background: rgba(56, 161, 105, 0.14) !important;
+  color: #2f855a !important;
+  font-weight: 600;
+}
+
+/* Ensure options and panel text are readable */
+::ng-deep .mat-mdc-select-panel .mat-mdc-list-item,
+::ng-deep .mat-select-panel .mat-option {
+  color: #1a202c !important;
+}
+
+/* Ensure dropdown text and labels use theme color when focused */
+:host ::ng-deep .mat-mdc-select.mat-mdc-select-focused .mat-mdc-floating-label,
+:host ::ng-deep .mat-select.mat-focused .mat-mdc-floating-label {
+  color: #38a169 !important;
+}
+
+/* Error styling for Material form errors */
+:host ::ng-deep .mat-error,
+:host ::ng-deep .mat-mdc-form-field-error {
+  color: #e53e3e !important; /* red */
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+:host ::ng-deep .mat-error .mat-icon,
+:host ::ng-deep .mat-mdc-form-field-error .mat-icon {
+  color: #e53e3e !important;
+}
+

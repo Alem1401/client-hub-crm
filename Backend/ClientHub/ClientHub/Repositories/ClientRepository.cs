@@ -51,7 +51,7 @@ namespace ClientHub.Repositories
 
         public async Task<IEnumerable<ResponseClientDto>> GetClientByAgent(int id, CancellationToken ct)
         {
-            var clients =await _context.Clients.Where( c=> c.AgentId == id).ToListAsync(ct);
+            var clients = await _context.Clients.Where(c => c.AgentId == id).ToListAsync(ct);
             return clients.Select(c => new ResponseClientDto
             {
                 Id = c.Id,
@@ -61,12 +61,42 @@ namespace ClientHub.Repositories
                 PhoneNumber = c.PhoneNumber,
                 Address = c.Address,
                 City = c.City,
+                DateOfBirth = c.DateOfBirth,
+                Status = c.Status,
+                Notes = c.Notes,
+                AgentId = c.AgentId,
+                LastContactDate = c.LastContactDate
             });
+        }
+
+        public async Task<ResponseClientDto> GetClientById(int id, CancellationToken ct)
+        {
+            var c = await _context.Clients.FirstOrDefaultAsync(x => x.Id == id, ct);
+            if (c == null)
+            {
+                return null!;   
+            }
+
+            return new ResponseClientDto
+            {
+                Id = c.Id,
+                FirstName = c.FirstName,
+                LastName = c.LastName,
+                Email = c.Email,
+                PhoneNumber = c.PhoneNumber,
+                Address = c.Address,
+                City = c.City,
+                DateOfBirth = c.DateOfBirth,
+                Status = c.Status,
+                Notes = c.Notes,
+                AgentId = c.AgentId,
+                LastContactDate = c.LastContactDate
+            };
         }
 
         public async Task<ResponseClientDto> UpdateClient(int id, DetailsClientDto client, CancellationToken ct)
         {
-            var toUpdate = _context.Clients.FirstOrDefault(c => c.Id == id);
+            var toUpdate = await _context.Clients.FirstOrDefaultAsync(c => c.Id == id, ct);
             if(toUpdate == null)
             {
                 throw new Exception("Client not found");
@@ -91,6 +121,11 @@ namespace ClientHub.Repositories
                 PhoneNumber = toUpdate.PhoneNumber,
                 Address = toUpdate.Address,
                 City = toUpdate.City,
+                DateOfBirth = toUpdate.DateOfBirth,
+                Status = toUpdate.Status,
+                Notes = toUpdate.Notes,
+                AgentId = toUpdate.AgentId,
+                LastContactDate = toUpdate.LastContactDate
             };
 
         }

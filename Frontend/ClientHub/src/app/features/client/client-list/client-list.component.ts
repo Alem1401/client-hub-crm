@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit ,inject} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
@@ -11,16 +11,10 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatChipsModule } from '@angular/material/chips';
 import { RouterModule } from '@angular/router';
+import { ResponseClientDto } from '../../../dtos/client/response-client.dto';
+import { ClientService } from '../../../services/client-service';
 
-export interface ResponseClientDto {
-  id: number;
-  firstName: string;
-  lastName: string;
-  email?: string;
-  phoneNumber?: string;
-  address?: string;
-  city: string;
-}
+
 
 @Component({
   selector: 'app-client-list',
@@ -43,10 +37,14 @@ export interface ResponseClientDto {
   styleUrls: ['./client-list.component.css']
 })
 export class ClientListComponent implements OnInit {
-  clients: ResponseClientDto[] = [];
+  clients : ResponseClientDto[] = [];
+
+  clientService = inject(ClientService)
   displayedColumns: string[] = ['id', 'firstName', 'lastName', 'email', 'phoneNumber', 'city', 'actions'];
 
   ngOnInit(): void {
-    // Data binding to be implemented by user
+    this.clientService.getClientsByAgentId(1).subscribe({
+      next: (response) => this.clients = response
+    })
   }
 }

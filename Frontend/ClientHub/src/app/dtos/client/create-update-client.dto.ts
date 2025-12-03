@@ -1,4 +1,4 @@
-export interface createClientDto {
+export interface createUpdateClientDto {
   firstName: string;
   lastName: string;
   email?: string | null;

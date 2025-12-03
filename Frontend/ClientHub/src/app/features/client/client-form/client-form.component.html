@@ -13,7 +13,7 @@
     <mat-divider></mat-divider>
 
     <mat-card-content class="form-content">
-      <form>
+      <form [formGroup]="clientForm" (ngSubmit)="finishClient()">
       
         <div class="section-title">
           <mat-icon class="section-icon">badge</mat-icon>
@@ -23,14 +23,14 @@
         <div class="form-row">
           <mat-form-field appearance="outline" class="form-field">
             <mat-label>First Name</mat-label>
-            <input matInput placeholder="Enter first name" required>
+            <input matInput placeholder="Enter first name" required formControlName="firstName">
             <mat-icon matPrefix>person</mat-icon>
             <mat-error>First name is required</mat-error>
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="form-field">
             <mat-label>Last Name</mat-label>
-            <input matInput placeholder="Enter last name" required>
+            <input matInput placeholder="Enter last name" required formControlName="lastName">
             <mat-icon matPrefix>person</mat-icon>
             <mat-error>Last name is required</mat-error>
           </mat-form-field>
@@ -39,7 +39,8 @@
         <div class="form-row">
           <mat-form-field appearance="outline" class="form-field">
             <mat-label>Date of Birth</mat-label>
-            <input matInput [matDatepicker]="dobPicker" placeholder="MM/DD/YYYY" required>
+                 <input matInput [matDatepicker]="dobPicker" placeholder="MM/DD/YYYY" required formControlName="dateOfBirth"
+                   readonly (keydown)="$event.preventDefault()" (paste)="$event.preventDefault()" (click)="dobPicker.open()">
             <mat-icon matPrefix>cake</mat-icon>
             <mat-datepicker-toggle matSuffix [for]="dobPicker"></mat-datepicker-toggle>
             <mat-datepicker #dobPicker></mat-datepicker>
@@ -48,7 +49,7 @@
 
           <mat-form-field appearance="outline" class="form-field">
             <mat-label>City</mat-label>
-            <input matInput placeholder="Enter city" required>
+            <input matInput placeholder="Enter city" required formControlName="city">
             <mat-icon matPrefix>location_city</mat-icon>
             <mat-error>City is required</mat-error>
           </mat-form-field>
@@ -56,7 +57,7 @@
 
         <mat-divider class="section-divider"></mat-divider>
 
-        <!-- Contact Information Section -->
+        
         <div class="section-title">
           <mat-icon class="section-icon">contact_mail</mat-icon>
           <h3>Contact Information</h3>
@@ -65,14 +66,14 @@
         <div class="form-row">
           <mat-form-field appearance="outline" class="form-field">
             <mat-label>Email</mat-label>
-            <input matInput type="email" placeholder="example@domain.com">
+            <input matInput type="email" placeholder="example@domain.com" formControlName="email">
             <mat-icon matPrefix>email</mat-icon>
             <mat-error>Please enter a valid email</mat-error>
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="form-field">
             <mat-label>Phone Number</mat-label>
-            <input matInput type="tel" placeholder="(555) 123-4567">
+            <input matInput type="tel" placeholder="(555) 123-4567" formControlName="phoneNumber">
             <mat-icon matPrefix>phone</mat-icon>
           </mat-form-field>
         </div>
@@ -80,14 +81,14 @@
         <div class="form-row full-width">
           <mat-form-field appearance="outline" class="form-field full-width">
             <mat-label>Address</mat-label>
-            <input matInput placeholder="Enter full address">
+            <input matInput placeholder="Enter full address" formControlName="address">
             <mat-icon matPrefix>home</mat-icon>
           </mat-form-field>
         </div>
 
         <mat-divider class="section-divider"></mat-divider>
 
-        <!-- Status & Dates Section -->
+       
         <div class="section-title">
           <mat-icon class="section-icon">info</mat-icon>
           <h3>Status & Additional Information</h3>
@@ -96,7 +97,7 @@
         <div class="form-row">
           <mat-form-field appearance="outline" class="form-field">
             <mat-label>Status</mat-label>
-            <mat-select placeholder="Select status" required>
+            <mat-select placeholder="Select status" required formControlName="status">
               <mat-option value="Active">Active</mat-option>
               <mat-option value="Prospect">Prospect</mat-option>
               <mat-option value="Inactive">Inactive</mat-option>
@@ -108,7 +109,8 @@
 
           <mat-form-field appearance="outline" class="form-field">
             <mat-label>Last Contact Date</mat-label>
-            <input matInput [matDatepicker]="contactPicker" placeholder="MM/DD/YYYY">
+                 <input matInput [matDatepicker]="contactPicker" placeholder="MM/DD/YYYY" formControlName="lastContactDate"
+                   readonly (keydown)="$event.preventDefault()" (paste)="$event.preventDefault()" (click)="contactPicker.open()">
             <mat-icon matPrefix>event</mat-icon>
             <mat-datepicker-toggle matSuffix [for]="contactPicker"></mat-datepicker-toggle>
             <mat-datepicker #contactPicker></mat-datepicker>
@@ -118,24 +120,23 @@
         <div class="form-row full-width">
           <mat-form-field appearance="outline" class="form-field full-width">
             <mat-label>Notes</mat-label>
-            <textarea matInput rows="4" placeholder="Additional notes about the client..."></textarea>
+            <textarea matInput rows="4" placeholder="Additional notes about the client..." formControlName="notes"></textarea>
             <mat-icon matPrefix>note</mat-icon>
           </mat-form-field>
         </div>
+        <mat-divider></mat-divider>
+
+        <mat-card-actions class="form-actions">
+          <button mat-stroked-button type="button" class="cancel-button" (click)="clientForm.reset()">
+            <mat-icon>close</mat-icon>
+            Cancel
+          </button>
+          <button mat-raised-button color="primary" type="submit" class="submit-button" [disabled]="clientForm.invalid">
+            <mat-icon>save</mat-icon>
+            Save Client
+          </button>
+        </mat-card-actions>
       </form>
     </mat-card-content>
-
-    <mat-divider></mat-divider>
-
-    <mat-card-actions class="form-actions">
-      <button mat-stroked-button type="button" class="cancel-button">
-        <mat-icon>close</mat-icon>
-        Cancel
-      </button>
-      <button mat-raised-button color="primary" type="submit" class="submit-button">
-        <mat-icon>save</mat-icon>
-        Save Client
-      </button>
-    </mat-card-actions>
   </mat-card>
 </div>

@@ -41,6 +41,16 @@ namespace ClientHub.Controllers
             return Ok(clients);
         }
 
+        [HttpGet("{id}")]
+        public async Task<ActionResult<ResponseClientDto>> GetClientById(int id, CancellationToken ct)
+        {
+            var client = await _repository.GetClientById(id, ct);
+            if (client == null)
+                return NotFound();
+
+            return Ok(client);
+        }
+
         [HttpPut("{id}")]
 
         public async Task<ActionResult<ResponseClientDto>> UpdateClient(int id, [FromBody] DetailsClientDto client, CancellationToken ct)
