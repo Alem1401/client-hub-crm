@@ -37,14 +37,56 @@ import { ClientService } from '../../../services/client-service';
   styleUrls: ['./client-list.component.css']
 })
 export class ClientListComponent implements OnInit {
-  clients : ResponseClientDto[] = [];
+  clients: ResponseClientDto[] = [];
+  filteredClients: ResponseClientDto[] = [];
+  pagedClients: ResponseClientDto[] = [];
+  pageSize = 10;
+  pageIndex = 0;
 
-  clientService = inject(ClientService)
+  clientService = inject(ClientService);
   displayedColumns: string[] = ['id', 'firstName', 'lastName', 'email', 'phoneNumber', 'city', 'actions'];
 
   ngOnInit(): void {
     this.clientService.getClientsByAgentId(1).subscribe({
-      next: (response) => this.clients = response
-    })
+      next: (response) => {
+        this.clients = response;
+        this.filteredClients = response;
+        this.updatePagedClients();
+      }
+    });
+  }
+
+  onSearch(query: string): void {
+    const lower = query.toLowerCase();
+    this.filteredClients = this.clients.filter(client =>
+      client.firstName?.toLowerCase().includes(lower) ||
+      client.lastName?.toLowerCase().includes(lower) ||
+      client.email?.toLowerCase().includes(lower) ||
+      client.city?.toLowerCase().includes(lower)
+    );
+    this.pageIndex = 0;
+    this.updatePagedClients();
+  }
+
+  updatePagedClients(): void {
+    const start = this.pageIndex * this.pageSize;
+    const end = start + this.pageSize;
+    this.pagedClients = this.filteredClients.slice(start, end);
+  }
+
+  onPageChange(event: any): void {
+    this.pageSize = event.pageSize;
+    this.pageIndex = event.pageIndex;
+    this.updatePagedClients();
+  }
+
+  onView(client: ResponseClientDto): void {
+    // TODO: Implement view logic (e.g., open dialog or navigate)
+    console.log('View client', client);
+  }
+
+  onDelete(client: ResponseClientDto): void {
+    // TODO: Implement delete logic (e.g., call service and refresh list)
+    console.log('Delete client', client);
   }
 }

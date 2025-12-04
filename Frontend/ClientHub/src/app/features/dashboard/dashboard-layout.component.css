@@ -1,6 +1,7 @@
 .dashboard-container {
   height: 100vh;
   width: 100%;
+  overflow: hidden;
 }
 
 /* Sidenav Styles */
@@ -218,7 +219,20 @@
 .page-content {
   flex: 1;
   padding: 24px;
-  overflow-y: auto;
+  overflow: hidden;
+}
+/* Hide scrollbars for all browsers in dashboard */
+.dashboard-container::-webkit-scrollbar,
+.page-content::-webkit-scrollbar {
+  display: none;
+}
+.dashboard-container {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.page-content {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 /* Menu Styles */

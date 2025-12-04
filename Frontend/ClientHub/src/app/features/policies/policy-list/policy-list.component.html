@@ -1,0 +1,86 @@
+<div class="policy-list-container">
+  <mat-card class="policy-list-card">
+    <mat-card-header>
+      <mat-card-title>
+        <div class="header-section">
+          <div class="title-section">
+            <mat-icon class="header-icon">description</mat-icon>
+            <h2>Policy Management</h2>
+          </div>
+          <button mat-raised-button color="primary" class="add-policy-btn" [routerLink]="['form']">
+            <mat-icon>add</mat-icon>
+            Add New Policy
+          </button>
+        </div>
+      </mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <!-- Search Section -->
+      <div class="search-section">
+        <mat-form-field appearance="outline" class="search-field">
+          <mat-label>Search policies</mat-label>
+          <input matInput placeholder="Search by policy number, type, or client" (input)="onSearch($event.target.value)">
+          <mat-icon matPrefix>search</mat-icon>
+        </mat-form-field>
+      </div>
+
+      <!-- Table Section -->
+      <div class="table-container">
+        <table class="policy-table responsive-table">
+          <thead>
+            <tr>
+              <th>Policy Number</th>
+              <th>Policy Type</th>
+              <th>Client Name</th>
+              <th>End Date</th>
+              <th class="centered">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let insurance of pagedInsurances" class="policy-row">
+              <td><span class="policy-number">{{ insurance.policyNumber }}</span></td>
+              <td><mat-chip class="type-chip">{{ insurance.policyType }}</mat-chip></td>
+              <td>{{ insurance.clientName }}</td>
+              <td><span class="date-cell">{{ insurance.endDate | date:'MM/dd/yyyy' }}</span></td>
+              <td class="centered">
+                <div class="action-buttons">
+                  <button mat-icon-button color="primary" matTooltip="View Details" aria-label="View Details" (click)="onView(insurance)">
+                    <mat-icon>visibility</mat-icon>
+                  </button>
+                  <button mat-icon-button color="accent" matTooltip="Edit Policy" aria-label="Edit Policy" (click)="onEdit(insurance)">
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                  <button mat-icon-button color="warn" matTooltip="Delete Policy" aria-label="Delete Policy" (click)="onDelete(insurance)">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- Empty State -->
+        <div class="empty-state" *ngIf="insurances.length === 0">
+          <mat-icon class="empty-icon">description</mat-icon>
+          <h3>No Policies Found</h3>
+          <p>Start by adding your first policy to the system</p>
+          <button mat-raised-button color="primary" [routerLink]="['form']">
+            <mat-icon>add</mat-icon>
+            Add Policy
+          </button>
+        </div>
+      </div>
+
+      <!-- Paginator -->
+      <mat-paginator 
+        [length]="filteredInsurances.length"
+        [pageSize]="pageSize"
+        [pageSizeOptions]="[10, 25, 50, 100]"
+        (page)="onPageChange($event)"
+        showFirstLastButtons
+        class="policy-paginator">
+      </mat-paginator>
+    </mat-card-content>
+  </mat-card>
+</div>

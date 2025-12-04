@@ -6,10 +6,12 @@ import { ClientFormComponent } from './features/client/client-form/client-form.c
 import { RegisterComponent } from "./features/auth/register/register.component";
 import { LoginComponent } from "./features/auth/login/login.component";
 import { LandingComponent } from "./features/landing/landing.component";
+import { InsuranceListComponent } from "./features/policies/policy-list/policy-list.component";
+import { ClientListComponent } from "./features/client/client-list/client-list.component";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterModule, MatButtonModule, MatSidenavModule, ClientFormComponent, RegisterComponent, LoginComponent, LandingComponent],
+  imports: [RouterModule, MatButtonModule, MatSidenavModule, ClientFormComponent, RegisterComponent, LoginComponent, LandingComponent, InsuranceListComponent, ClientListComponent],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })

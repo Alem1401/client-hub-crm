@@ -20,14 +20,14 @@
       <div class="search-section">
         <mat-form-field appearance="outline" class="search-field">
           <mat-label>Search clients</mat-label>
-          <input matInput placeholder="Search by name, email, or city">
+          <input matInput placeholder="Search by name, email, or city" (input)="onSearch($event.target.value)">
           <mat-icon matPrefix>search</mat-icon>
         </mat-form-field>
       </div>
 
       <!-- Table Section -->
       <div class="table-container">
-        <table class="client-table">
+        <table class="client-table responsive-table">
           <thead>
             <tr>
               <th>First Name</th>
@@ -39,21 +39,21 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let client of clients" class="client-row">
+            <tr *ngFor="let client of pagedClients" class="client-row">
               <td>{{ client.firstName }}</td>
               <td>{{ client.lastName }}</td>
               <td><span class="email-cell">{{ client.email || 'N/A' }}</span></td>
               <td><span class="phone-cell">{{ client.phoneNumber || 'N/A' }}</span></td>
-              <td><mat-chip class="city-chip">{{ client.city }}</mat-chip></td>
-              <td>
+              <td class="centered"><mat-chip class="city-chip">{{ client.city }}</mat-chip></td>
+              <td class="centered">
                 <div class="action-buttons">
-                  <button mat-icon-button color="primary" matTooltip="View Details">
+                  <button mat-icon-button color="primary" matTooltip="View Details" aria-label="View Details" (click)="onView(client)">
                     <mat-icon>visibility</mat-icon>
                   </button>
-                  <button mat-icon-button color="accent" matTooltip="Edit Client" [routerLink]="['/clients','form', client.id]">
+                  <button mat-icon-button color="accent" matTooltip="Edit Client" aria-label="Edit Client" [routerLink]="['/clients','form', client.id]">
                     <mat-icon>edit</mat-icon>
                   </button>
-                  <button mat-icon-button color="warn" matTooltip="Delete Client">
+                  <button mat-icon-button color="warn" matTooltip="Delete Client" aria-label="Delete Client" (click)="onDelete(client)">
                     <mat-icon>delete</mat-icon>
                   </button>
                 </div>
@@ -67,7 +67,7 @@
           <mat-icon class="empty-icon">people_outline</mat-icon>
           <h3>No Clients Found</h3>
           <p>Start by adding your first client to the system</p>
-          <button mat-raised-button color="primary">
+          <button mat-raised-button color="primary" [routerLink]="['form']">
             <mat-icon>add</mat-icon>
             Add Client
           </button>
@@ -76,7 +76,10 @@
 
       <!-- Paginator -->
       <mat-paginator 
+        [length]="clients.length"
+        [pageSize]="pageSize"
         [pageSizeOptions]="[10, 25, 50, 100]"
+        (page)="onPageChange($event)"
         showFirstLastButtons
         class="client-paginator">
       </mat-paginator>

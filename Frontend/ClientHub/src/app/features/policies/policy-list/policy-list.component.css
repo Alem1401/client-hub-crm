@@ -6,14 +6,14 @@
   background: #f5f7fa;
 }
 
-.client-list-container {
+.policy-list-container {
   padding: 32px;
   width: 100%;
   height: 100%;
   overflow: hidden;
 }
 
-.client-list-card {
+.policy-list-card {
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
   border-radius: 16px;
   background: white;
@@ -21,7 +21,7 @@
 }
 
 /* Header Section */
-:host ::ng-deep .client-list-card .mat-mdc-card-header {
+:host ::ng-deep .policy-list-card .mat-mdc-card-header {
   padding: 32px 32px 24px;
   background: linear-gradient(135deg, #38a169 0%, #2f855a 100%);
   border-bottom: none;
@@ -54,7 +54,7 @@
   color: white;
 }
 
-.add-client-btn {
+.add-policy-btn {
   height: 48px;
   padding: 0 28px;
   font-weight: 600;
@@ -63,17 +63,17 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
-.add-client-btn:hover {
+.add-policy-btn:hover {
   background-color: #f7fafc !important;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
-:host ::ng-deep .add-client-btn .mat-icon {
+:host ::ng-deep .add-policy-btn .mat-icon {
   margin-right: 8px;
 }
 
 /* Card Content */
-:host ::ng-deep .client-list-card .mat-mdc-card-content {
+:host ::ng-deep .policy-list-card .mat-mdc-card-content {
   padding: 32px;
 }
 
@@ -112,14 +112,14 @@
   min-height: 450px;
 }
 
-.client-table {
+.policy-table {
   width: 100%;
   background: white;
   border-collapse: collapse;
 }
 
 /* Table Headers */
-.client-table thead th {
+.policy-table thead th {
   background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
   color: #2d3748;
   font-weight: 700;
@@ -132,7 +132,7 @@
 }
 
 /* Table Cells */
-.client-table tbody td {
+.policy-table tbody td {
   padding: 18px 16px;
   color: #2d3748;
   font-size: 14px;
@@ -140,25 +140,31 @@
 }
 
 /* Table Rows */
-.client-row {
+.policy-row {
   transition: all 0.2s ease;
   cursor: pointer;
 }
 
-.client-row:hover {
+.policy-row:hover {
   background: linear-gradient(90deg, #f7fafc 0%, #edf2f7 100%);
   box-shadow: inset 4px 0 0 #38a169;
 }
 
-/* Email and Phone Cells */
-.email-cell,
-.phone-cell {
+/* Policy Number Cell */
+.policy-number {
+  color: #38a169;
+  font-weight: 600;
+  font-family: 'Courier New', monospace;
+}
+
+/* Date Cell */
+.date-cell {
   color: #4a5568;
   font-weight: 500;
 }
 
-/* City Chip */
-.city-chip {
+/* Type Chip */
+.type-chip {
   background: linear-gradient(135deg, #e6f7ed 0%, #d4f4e0 100%);
   color: #2f855a;
   font-size: 13px;
@@ -169,7 +175,7 @@
   box-shadow: 0 2px 4px rgba(56, 161, 105, 0.15);
 }
 
-:host ::ng-deep .city-chip .mat-mdc-chip-action-label {
+:host ::ng-deep .type-chip .mat-mdc-chip-action-label {
   color: #2f855a;
 }
 
@@ -251,52 +257,48 @@
 .empty-state button {
   height: 48px;
   padding: 0 28px;
-  font-weight: 600;
 }
 
 /* Paginator */
-.client-paginator {
+.policy-paginator {
   border-top: 1px solid #e2e8f0;
   background: #f7fafc;
 }
 
-:host ::ng-deep .client-paginator .mat-mdc-paginator-container {
+:host ::ng-deep .policy-paginator .mat-mdc-paginator-container {
   padding: 8px 16px;
   min-height: 56px;
 }
 
-:host ::ng-deep .client-paginator .mat-mdc-select-value {
+:host ::ng-deep .policy-paginator .mat-mdc-select-value {
   color: #2d3748;
 }
 
-:host ::ng-deep .client-paginator .mat-mdc-paginator-page-size-label,
-:host ::ng-deep .client-paginator .mat-mdc-paginator-range-label {
+:host ::ng-deep .policy-paginator .mat-mdc-paginator-page-size-label,
+:host ::ng-deep .policy-paginator .mat-mdc-paginator-range-label {
   color: #4a5568;
   margin: 0 8px;
 }
 
-/* Material Overrides */
-::ng-deep .mat-mdc-raised-button.mat-primary {
-  background-color: #38a169 !important;
+/* Hide scrollbars for all browsers */
+.table-container::-webkit-scrollbar,
+.policy-list-container::-webkit-scrollbar {
+  display: none;
 }
 
-::ng-deep .mat-mdc-raised-button.mat-primary:hover {
-  background-color: #2f855a !important;
-  box-shadow: 0 4px 12px rgba(56, 161, 105, 0.3);
+.table-container {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
-::ng-deep .mat-drawer-inner-container {
-  display: flex;
-  flex-direction: column;
-}
-
-::ng-deep .mat-mdc-menu-panel {
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+.policy-list-container {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
-  .client-list-container {
+  .policy-list-container {
     padding: 16px;
   }
 
@@ -306,7 +308,7 @@
     align-items: flex-start;
   }
 
-  .add-client-btn {
+  .add-policy-btn {
     width: 100%;
   }
 
@@ -318,4 +320,3 @@
     overflow-x: auto;
   }
 }
-
