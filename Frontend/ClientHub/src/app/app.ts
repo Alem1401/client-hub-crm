@@ -6,7 +6,7 @@ import { ClientFormComponent } from './features/client/client-form/client-form.c
 import { RegisterComponent } from "./features/auth/register/register.component";
 import { LoginComponent } from "./features/auth/login/login.component";
 import { LandingComponent } from "./features/landing/landing.component";
-import { InsuranceListComponent } from "./features/policies/policy-list/policy-list.component";
+import { InsuranceListComponent } from "./features/policies/policy-list/insurance-list.component";
 import { ClientListComponent } from "./features/client/client-list/client-list.component";
 
 @Component({

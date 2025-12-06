@@ -11,8 +11,10 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatChipsModule } from '@angular/material/chips';
 import { RouterModule } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
 import { ResponseClientDto } from '../../../dtos/client/response-client.dto';
 import { ClientService } from '../../../services/client-service';
+
 
 
 
@@ -44,6 +46,7 @@ export class ClientListComponent implements OnInit {
   pageIndex = 0;
 
   clientService = inject(ClientService);
+  dialog = inject(MatDialog);
   displayedColumns: string[] = ['id', 'firstName', 'lastName', 'email', 'phoneNumber', 'city', 'actions'];
 
   ngOnInit(): void {
@@ -86,7 +89,6 @@ export class ClientListComponent implements OnInit {
   }
 
   onDelete(client: ResponseClientDto): void {
-    // TODO: Implement delete logic (e.g., call service and refresh list)
-    console.log('Delete client', client);
+ 
   }
 }

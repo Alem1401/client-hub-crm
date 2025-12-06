@@ -16,7 +16,7 @@
     </mat-card-header>
 
     <mat-card-content>
-      <!-- Search Section -->
+
       <div class="search-section">
         <mat-form-field appearance="outline" class="search-field">
           <mat-label>Search clients</mat-label>
@@ -25,7 +25,7 @@
         </mat-form-field>
       </div>
 
-      <!-- Table Section -->
+
       <div class="table-container">
         <table class="client-table responsive-table">
           <thead>
@@ -47,13 +47,16 @@
               <td class="centered"><mat-chip class="city-chip">{{ client.city }}</mat-chip></td>
               <td class="centered">
                 <div class="action-buttons">
-                  <button mat-icon-button color="primary" matTooltip="View Details" aria-label="View Details" (click)="onView(client)">
+                  <button mat-icon-button color="primary" matTooltip="View Details" aria-label="View Details"
+                    (click)="onView(client)">
                     <mat-icon>visibility</mat-icon>
                   </button>
-                  <button mat-icon-button color="accent" matTooltip="Edit Client" aria-label="Edit Client" [routerLink]="['/clients','form', client.id]">
+                  <button mat-icon-button color="accent" matTooltip="Edit Client" aria-label="Edit Client"
+                    [routerLink]="['form', client.id]">
                     <mat-icon>edit</mat-icon>
                   </button>
-                  <button mat-icon-button color="warn" matTooltip="Delete Client" aria-label="Delete Client" (click)="onDelete(client)">
+                  <button mat-icon-button color="warn" matTooltip="Delete Client" aria-label="Delete Client"
+                    (click)="onDelete(client)">
                     <mat-icon>delete</mat-icon>
                   </button>
                 </div>
@@ -62,7 +65,7 @@
           </tbody>
         </table>
 
-        <!-- Empty State -->
+
         <div class="empty-state" *ngIf="clients.length === 0">
           <mat-icon class="empty-icon">people_outline</mat-icon>
           <h3>No Clients Found</h3>
@@ -74,14 +77,8 @@
         </div>
       </div>
 
-      <!-- Paginator -->
-      <mat-paginator 
-        [length]="clients.length"
-        [pageSize]="pageSize"
-        [pageSizeOptions]="[10, 25, 50, 100]"
-        (page)="onPageChange($event)"
-        showFirstLastButtons
-        class="client-paginator">
+      <mat-paginator [length]="clients.length" [pageSize]="pageSize" [pageSizeOptions]="[10, 25, 50, 100]"
+        (page)="onPageChange($event)" showFirstLastButtons class="client-paginator">
       </mat-paginator>
     </mat-card-content>
   </mat-card>

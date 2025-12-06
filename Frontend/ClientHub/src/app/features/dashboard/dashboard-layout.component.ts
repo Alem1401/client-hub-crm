@@ -10,7 +10,6 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { ClientFormComponent } from "../client/client-form/client-form.component";
 import { OnInit } from '@angular/core';
 import { GlobalService } from '../../services/global-service';
 import { responseAgentDto } from '../../dtos/agent/response-agent.dto';
@@ -31,7 +30,7 @@ import { responseAgentDto } from '../../dtos/agent/response-agent.dto';
     MatDividerModule,
     MatBadgeModule,
     MatTooltipModule,
-    ClientFormComponent
+    
 ],
   templateUrl: './dashboard-layout.component.html',
   styleUrls: ['./dashboard-layout.component.css']

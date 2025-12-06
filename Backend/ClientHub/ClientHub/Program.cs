@@ -32,7 +32,7 @@ builder.Services.AddScoped<IAgentRepository, AgentRepository>();
 builder.Services.AddScoped<IClientRepository, ClientRepository>();
 builder.Services.AddScoped<ICarInsuranceRepository, CarInsuranceRepository>();
 builder.Services.AddScoped<IPropertyInsuranceRepository, PropertyInsuranceRepository>();
-
+builder.Services.AddScoped<IInsuranceRepository,InsuranceRepository>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -50,5 +50,8 @@ app.UseCors("AllowAngularDevClient");
 app.UseAuthorization();
 
 app.MapControllers();
+
+// Seed database with sample data
+await SeedData.SeedAsync(app.Services, app.Environment);
 
 app.Run();

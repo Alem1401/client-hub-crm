@@ -5,3 +5,22 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+/* Dialog Backdrop Blur Effect */
+.dialog-backdrop-blur {
+  backdrop-filter: blur(8px);
+  background-color: rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Confirmation Dialog Panel Styling */
+.confirmation-dialog .mat-mdc-dialog-container {
+  border-radius: 16px;
+  padding: 0;
+  overflow: visible;
+}
+
+.confirmation-dialog .mat-mdc-dialog-surface {
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.2);
+}

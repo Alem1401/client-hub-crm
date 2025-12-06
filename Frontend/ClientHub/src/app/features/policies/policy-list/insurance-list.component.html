@@ -73,8 +73,8 @@
       </div>
 
       <!-- Paginator -->
-      <mat-paginator 
-        [length]="filteredInsurances.length"
+      <mat-paginator #paginator
+        [length]="totalLength"
         [pageSize]="pageSize"
         [pageSizeOptions]="[10, 25, 50, 100]"
         (page)="onPageChange($event)"
