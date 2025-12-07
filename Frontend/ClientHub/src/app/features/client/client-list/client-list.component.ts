@@ -14,7 +14,7 @@ import { RouterModule } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { ResponseClientDto } from '../../../dtos/client/response-client.dto';
 import { ClientService } from '../../../services/client-service';
-
+import { ConfirmationWindowComponent } from '../../shared/confirmation-window/confirmation-window.component';
 
 
 
@@ -33,7 +33,8 @@ import { ClientService } from '../../../services/client-service';
     MatSortModule,
     MatTooltipModule,
     MatChipsModule,
-    RouterModule
+    RouterModule,
+    ConfirmationWindowComponent
   ],
   templateUrl: './client-list.component.html',
   styleUrls: ['./client-list.component.css']
@@ -44,6 +45,8 @@ export class ClientListComponent implements OnInit {
   pagedClients: ResponseClientDto[] = [];
   pageSize = 10;
   pageIndex = 0;
+
+  confirmation : boolean = false;
 
   clientService = inject(ClientService);
   dialog = inject(MatDialog);
@@ -87,8 +90,14 @@ export class ClientListComponent implements OnInit {
     // TODO: Implement view logic (e.g., open dialog or navigate)
     console.log('View client', client);
   }
+       
 
   onDelete(client: ResponseClientDto): void {
- 
+  
+    this.clientService.deleteClient(client.id).subscribe({
+      next: () => this.confirmation = false
+    });
+  
+    
   }
 }

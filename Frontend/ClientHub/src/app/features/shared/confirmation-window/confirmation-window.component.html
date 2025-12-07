@@ -1,0 +1,32 @@
+<div class="confirmation-overlay">
+  <div class="confirmation-backdrop"></div>
+  <mat-card class="confirmation-card">
+    <mat-card-header>
+      <mat-card-title>
+        <div class="header-content">
+          <mat-icon class="header-icon">help_outline</mat-icon>
+          <h2>Confirmation</h2>
+        </div>
+      </mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="message-content">
+        <p>{{ message }}</p>
+      </div>
+    </mat-card-content>
+
+    <mat-card-actions>
+      <div class="action-buttons">
+        <button mat-raised-button class="cancel-btn" (click)="cancel.emit(false)">
+          <mat-icon>close</mat-icon>
+          Cancel
+        </button>
+        <button mat-raised-button color="primary" class="confirm-btn" (click)="confirm.emit(true)">
+          <mat-icon>check</mat-icon>
+          Confirm
+        </button>
+      </div>
+    </mat-card-actions>
+  </mat-card>
+</div>
