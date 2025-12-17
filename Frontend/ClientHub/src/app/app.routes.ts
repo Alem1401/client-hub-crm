@@ -6,6 +6,7 @@ import { DashboardLayoutComponent } from './features/dashboard/dashboard-layout.
 import { ClientListComponent } from './features/client/client-list/client-list.component';
 import { ClientFormComponent } from './features/client/client-form/client-form.component';
 import { InsuranceListComponent } from './features/policies/policy-list/insurance-list.component';
+import { PolicyFormComponent } from './features/policies/policy-form/policy-form.component';
 
 export const routes: Routes = [
 {path : "register",component:RegisterComponent},
@@ -27,7 +28,8 @@ export const routes: Routes = [
   },
   {path:"insurances",
     children:[
-      {path:"",component:InsuranceListComponent} 
+      {path:"",component:InsuranceListComponent},
+      {path:"form",component:PolicyFormComponent}
     ]
   }
 ]

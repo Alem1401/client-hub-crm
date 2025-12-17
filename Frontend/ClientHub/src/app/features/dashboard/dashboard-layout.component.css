@@ -219,20 +219,28 @@
 .page-content {
   flex: 1;
   padding: 24px;
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: #f5f7fa;
 }
-/* Hide scrollbars for all browsers in dashboard */
-.dashboard-container::-webkit-scrollbar,
+
+/* Custom scrollbar for page content */
 .page-content::-webkit-scrollbar {
-  display: none;
+  width: 8px;
 }
-.dashboard-container {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+
+.page-content::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
 }
-.page-content {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+
+.page-content::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+.page-content::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
 }
 
 /* Menu Styles */

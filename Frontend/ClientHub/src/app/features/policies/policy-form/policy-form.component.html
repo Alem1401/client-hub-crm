@@ -1,0 +1,441 @@
+<div class="policy-form-container">
+  <div class="form-card">
+    <div class="form-header">
+      <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+        <h2 class="form-title">
+          <mat-icon class="form-title-icon">add_circle</mat-icon>
+          Create New Insurance Policy
+        </h2>
+        <div style="display: flex; gap: 10px;">
+          <button type="button" class="test-btn" (click)="fillTestData('car')" title="Fill with test car data">
+            <mat-icon>directions_car</mat-icon>
+            Test Car
+          </button>
+          <button type="button" class="test-btn" (click)="fillTestData('property')" title="Fill with test property data">
+            <mat-icon>home</mat-icon>
+            Test Property
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <div class="form-body">
+      <form [formGroup]="policyForm" (ngSubmit)="onSubmit()">
+      
+        <!-- Insurance Type Selection - Always Visible -->
+        <div class="form-section">
+          <h3 class="section-title">Policy Type</h3>
+          <div class="form-group">
+            <label for="insuranceType" class="form-label required">Insurance Type</label>
+            <select 
+              id="insuranceType" 
+              formControlName="insuranceType"
+              (change)="onInsuranceTypeChange($any($event.target).value)"
+              class="form-control"
+              [class.is-invalid]="isFieldInvalid('insuranceType')">
+              <option value="">Select insurance type...</option>
+              <option *ngFor="let type of insuranceTypes" [value]="type.value">
+                {{ type.label }}
+              </option>
+            </select>
+            <span class="error-message" *ngIf="isFieldInvalid('insuranceType')">
+              {{ getErrorMessage('insuranceType') }}
+            </span>
+          </div>
+        </div>
+
+      <!-- Common Fields - Always Visible -->
+      <div class="form-section" *ngIf="selectedInsuranceType">
+        <h3 class="section-title">General Information</h3>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="clientId" class="form-label required">Client ID</label>
+            <input 
+              type="number" 
+              id="clientId" 
+              formControlName="clientId"
+              class="form-control"
+              placeholder="Enter client ID"
+              [class.is-invalid]="isFieldInvalid('clientId')">
+            <span class="error-message" *ngIf="isFieldInvalid('clientId')">
+              {{ getErrorMessage('clientId') }}
+            </span>
+          </div>
+
+          <div class="form-group">
+            <label for="policyNumber" class="form-label required">Policy Number</label>
+            <input 
+              type="text" 
+              id="policyNumber" 
+              formControlName="policyNumber"
+              class="form-control"
+              placeholder="Enter policy number"
+              maxlength="50"
+              [class.is-invalid]="isFieldInvalid('policyNumber')">
+            <span class="error-message" *ngIf="isFieldInvalid('policyNumber')">
+              {{ getErrorMessage('policyNumber') }}
+            </span>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="startDate" class="form-label required">Start Date</label>
+            <input 
+              type="date" 
+              id="startDate" 
+              formControlName="startDate"
+              class="form-control"
+              [class.is-invalid]="isFieldInvalid('startDate')">
+            <span class="error-message" *ngIf="isFieldInvalid('startDate')">
+              {{ getErrorMessage('startDate') }}
+            </span>
+          </div>
+
+          <div class="form-group">
+            <label for="endDate" class="form-label required">End Date</label>
+            <input 
+              type="date" 
+              id="endDate" 
+              formControlName="endDate"
+              class="form-control"
+              [class.is-invalid]="isFieldInvalid('endDate')">
+            <span class="error-message" *ngIf="isFieldInvalid('endDate')">
+              {{ getErrorMessage('endDate') }}
+            </span>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="totalAmount" class="form-label required">Total Amount ($)</label>
+            <input 
+              type="number" 
+              id="totalAmount" 
+              formControlName="totalAmount"
+              class="form-control"
+              placeholder="0.00"
+              step="0.01"
+              min="0"
+              [class.is-invalid]="isFieldInvalid('totalAmount')">
+            <span class="error-message" *ngIf="isFieldInvalid('totalAmount')">
+              {{ getErrorMessage('totalAmount') }}
+            </span>
+          </div>
+
+          <div class="form-group">
+            <label for="discount" class="form-label">Discount (%)</label>
+            <input 
+              type="number" 
+              id="discount" 
+              formControlName="discount"
+              class="form-control"
+              placeholder="0"
+              step="0.01"
+              min="0"
+              max="100"
+              [class.is-invalid]="isFieldInvalid('discount')">
+            <span class="error-message" *ngIf="isFieldInvalid('discount')">
+              {{ getErrorMessage('discount') }}
+            </span>
+          </div>
+
+          <div class="form-group">
+            <label for="surcharge" class="form-label">Surcharge (%)</label>
+            <input 
+              type="number" 
+              id="surcharge" 
+              formControlName="surcharge"
+              class="form-control"
+              placeholder="0"
+              step="0.01"
+              min="0"
+              max="100"
+              [class.is-invalid]="isFieldInvalid('surcharge')">
+            <span class="error-message" *ngIf="isFieldInvalid('surcharge')">
+              {{ getErrorMessage('surcharge') }}
+            </span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="notes" class="form-label">Notes</label>
+          <textarea 
+            id="notes" 
+            formControlName="notes"
+            class="form-control"
+            rows="3"
+            maxlength="500"
+            placeholder="Add any additional notes..."></textarea>
+        </div>
+      </div>
+
+      <!-- Car Insurance Specific Fields -->
+      <div class="form-section" *ngIf="selectedInsuranceType === 'car'">
+        <h3 class="section-title">Vehicle Information</h3>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="vehicleType" class="form-label required">Vehicle Type</label>
+            <select 
+              id="vehicleType" 
+              formControlName="vehicleType"
+              class="form-control"
+              [class.is-invalid]="isFieldInvalid('vehicleType')">
+              <option value="">Select vehicle type...</option>
+              <option *ngFor="let type of vehicleTypes" [value]="type">{{ type }}</option>
+            </select>
+            <span class="error-message" *ngIf="isFieldInvalid('vehicleType')">
+              {{ getErrorMessage('vehicleType') }}
+            </span>
+          </div>
+
+          <div class="form-group">
+            <label for="registrationPlate" class="form-label required">Registration Plate</label>
+            <input 
+              type="text" 
+              id="registrationPlate" 
+              formControlName="registrationPlate"
+              class="form-control"
+              placeholder="e.g., ABC-1234"
+              maxlength="20"
+              [class.is-invalid]="isFieldInvalid('registrationPlate')">
+            <span class="error-message" *ngIf="isFieldInvalid('registrationPlate')">
+              {{ getErrorMessage('registrationPlate') }}
+            </span>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="chassisNumber" class="form-label required">Chassis Number (VIN)</label>
+            <input 
+              type="text" 
+              id="chassisNumber" 
+              formControlName="chassisNumber"
+              class="form-control"
+              placeholder="Enter chassis/VIN number"
+              maxlength="100"
+              [class.is-invalid]="isFieldInvalid('chassisNumber')">
+            <span class="error-message" *ngIf="isFieldInvalid('chassisNumber')">
+              {{ getErrorMessage('chassisNumber') }}
+            </span>
+          </div>
+
+          <div class="form-group">
+            <label for="color" class="form-label required">Color</label>
+            <select 
+              id="color" 
+              formControlName="color"
+              class="form-control"
+              [class.is-invalid]="isFieldInvalid('color')">
+              <option value="">Select color...</option>
+              <option *ngFor="let color of colors" [value]="color">{{ color }}</option>
+            </select>
+            <span class="error-message" *ngIf="isFieldInvalid('color')">
+              {{ getErrorMessage('color') }}
+            </span>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="productionYear" class="form-label required">Production Year</label>
+            <input 
+              type="number" 
+              id="productionYear" 
+              formControlName="productionYear"
+              class="form-control"
+              placeholder="e.g., 2023"
+              [min]="1900"
+              [max]="maxProductionYear"
+              [class.is-invalid]="isFieldInvalid('productionYear')">
+            <span class="error-message" *ngIf="isFieldInvalid('productionYear')">
+              {{ getErrorMessage('productionYear') }}
+            </span>
+          </div>
+
+          <div class="form-group">
+            <label for="powerKw" class="form-label required">Power (kW)</label>
+            <input 
+              type="number" 
+              id="powerKw" 
+              formControlName="powerKw"
+              class="form-control"
+              placeholder="Enter power in kW"
+              min="1"
+              [class.is-invalid]="isFieldInvalid('powerKw')">
+            <span class="error-message" *ngIf="isFieldInvalid('powerKw')">
+              {{ getErrorMessage('powerKw') }}
+            </span>
+          </div>
+
+          <div class="form-group">
+            <label for="engineCcm" class="form-label required">Engine Capacity (ccm)</label>
+            <input 
+              type="number" 
+              id="engineCcm" 
+              formControlName="engineCcm"
+              class="form-control"
+              placeholder="Enter engine ccm"
+              min="1"
+              [class.is-invalid]="isFieldInvalid('engineCcm')">
+            <span class="error-message" *ngIf="isFieldInvalid('engineCcm')">
+              {{ getErrorMessage('engineCcm') }}
+            </span>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="purpose" class="form-label required">Purpose</label>
+            <select 
+              id="purpose" 
+              formControlName="purpose"
+              class="form-control"
+              [class.is-invalid]="isFieldInvalid('purpose')">
+              <option value="">Select purpose...</option>
+              <option *ngFor="let purpose of purposes" [value]="purpose">{{ purpose }}</option>
+            </select>
+            <span class="error-message" *ngIf="isFieldInvalid('purpose')">
+              {{ getErrorMessage('purpose') }}
+            </span>
+          </div>
+
+          <div class="form-group">
+            <label for="category" class="form-label required">Category</label>
+            <select 
+              id="category" 
+              formControlName="category"
+              class="form-control"
+              [class.is-invalid]="isFieldInvalid('category')">
+              <option value="">Select category...</option>
+              <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
+            </select>
+            <span class="error-message" *ngIf="isFieldInvalid('category')">
+              {{ getErrorMessage('category') }}
+            </span>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="type" class="form-label required">Type</label>
+            <input 
+              type="text" 
+              id="type" 
+              formControlName="type"
+              class="form-control"
+              placeholder="e.g., Full Coverage, Liability"
+              maxlength="100"
+              [class.is-invalid]="isFieldInvalid('type')">
+            <span class="error-message" *ngIf="isFieldInvalid('type')">
+              {{ getErrorMessage('type') }}
+            </span>
+          </div>
+
+          <div class="form-group">
+            <label for="bonus" class="form-label required">Bonus</label>
+            <input 
+              type="number" 
+              id="bonus" 
+              formControlName="bonus"
+              class="form-control"
+              placeholder="0.00"
+              step="0.01"
+              min="0"
+              [class.is-invalid]="isFieldInvalid('bonus')">
+            <span class="error-message" *ngIf="isFieldInvalid('bonus')">
+              {{ getErrorMessage('bonus') }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Property Insurance Specific Fields -->
+      <div class="form-section" *ngIf="selectedInsuranceType === 'property'">
+        <h3 class="section-title">Property Information</h3>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="address" class="form-label required">Address</label>
+            <input 
+              type="text" 
+              id="address" 
+              formControlName="address"
+              class="form-control"
+              placeholder="Enter property address"
+              maxlength="200"
+              [class.is-invalid]="isFieldInvalid('address')">
+            <span class="error-message" *ngIf="isFieldInvalid('address')">
+              {{ getErrorMessage('address') }}
+            </span>
+          </div>
+
+          <div class="form-group">
+            <label for="city" class="form-label required">City</label>
+            <input 
+              type="text" 
+              id="city" 
+              formControlName="city"
+              class="form-control"
+              placeholder="Enter city"
+              maxlength="100"
+              [class.is-invalid]="isFieldInvalid('city')">
+            <span class="error-message" *ngIf="isFieldInvalid('city')">
+              {{ getErrorMessage('city') }}
+            </span>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="squareMeters" class="form-label required">Square Meters</label>
+            <input 
+              type="number" 
+              id="squareMeters" 
+              formControlName="squareMeters"
+              class="form-control"
+              placeholder="Enter property size"
+              step="0.01"
+              min="1"
+              max="100000"
+              [class.is-invalid]="isFieldInvalid('squareMeters')">
+            <span class="error-message" *ngIf="isFieldInvalid('squareMeters')">
+              {{ getErrorMessage('squareMeters') }}
+            </span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="risks" class="form-label required">Covered Risks</label>
+          <textarea 
+            id="risks" 
+            formControlName="risks"
+            class="form-control"
+            rows="3"
+            maxlength="500"
+            placeholder="List all covered risks (e.g., Fire, Flood, Theft, Earthquake...)"
+            [class.is-invalid]="isFieldInvalid('risks')"></textarea>
+          <span class="error-message" *ngIf="isFieldInvalid('risks')">
+            {{ getErrorMessage('risks') }}
+          </span>
+        </div>
+      </div>
+
+      <!-- Form Actions -->
+      <div class="form-actions" *ngIf="selectedInsuranceType">
+        <button type="button" class="btn btn-secondary" (click)="onCancel()">
+          <mat-icon>close</mat-icon>
+          Cancel
+        </button>
+        <button type="submit" class="btn btn-primary" [disabled]="isSubmitting">
+          <mat-icon>save</mat-icon>
+          {{ isSubmitting ? 'Creating...' : 'Create Policy' }}
+        </button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -72,7 +72,7 @@ export class InsuranceListComponent implements OnInit {
         i.clientName?.toLowerCase().includes(lower)
     );
     this.pageIndex = 0;
-    // When searching, reset the UI paginator to the first page (if present)
+   
     try { this.paginator?.firstPage(); } catch {}
     this.updatePagedInsurances();
   }
@@ -81,12 +81,12 @@ export class InsuranceListComponent implements OnInit {
     const start = this.pageIndex * this.pageSize;
     const end = start + this.pageSize;
     this.pagedInsurances = this.filteredInsurances.slice(start, end);
-    // Update totalLength so MatPaginator shows the correct overall count
+
     this.totalLength = this.filteredInsurances.length;
   }
 
   onPageChange(event: any): void {
-    // Accept both PageEvent and a synthetic object; prefer typed values
+ 
     const e = event as PageEvent;
     this.pageSize = e.pageSize ?? this.pageSize;
     this.pageIndex = e.pageIndex ?? this.pageIndex;
@@ -94,24 +94,22 @@ export class InsuranceListComponent implements OnInit {
   }
 
   onView(policy: InsuranceSummaryDto): void {
-    // TODO: Implement view logic
+ 
     console.log('View insurance', policy);
   }
 
   onEdit(policy: InsuranceSummaryDto): void {
-    // TODO: Implement edit logic
+
     console.log('Edit insurance', policy);
   }
 
   onDelete(policy: InsuranceSummaryDto): void {
-    // TODO: Implement delete logic
+ 
     console.log('Delete insurance', policy);
   }
 
   loadInsurances() {
-    // Subscribe once to currentUser$ (avoid memory leaks) and then fetch
-    // insurances for that agent. After data arrives we populate the arrays
-    // and initialize pagination.
+   
     this.globalService.currentUser$.pipe(take(1)).subscribe({
       next: (response) => {
         this.currentAgent = response;
