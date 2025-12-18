@@ -35,22 +35,26 @@ import { responseAgentDto } from '../../dtos/agent/response-agent.dto';
   templateUrl: './dashboard-layout.component.html',
   styleUrls: ['./dashboard-layout.component.css']
 })
-export class DashboardLayoutComponent {
+export class DashboardLayoutComponent implements OnInit {
   isSidenavOpen = true;
   router = inject(Router)
   globalService = inject(GlobalService);
   currentUser : responseAgentDto | null = null;
- // ngOnInit(): void {
-   // this.globalService.currentUser$.subscribe({
-     // next : (response) =>{ this.currentUser= response
-      //if(!response){
-        //this.router.navigate([""]);
+  
+  ngOnInit(): void {
+    this.globalService.currentUser$.subscribe({
+      next : (response) =>{ 
+        this.currentUser = response;
+        if(!response){
+          this.router.navigate([""]);
+        }
+      }
+    });
+  }
 
-
-     // }  
-      //}
-      
-    //})
-  //}
+  logout(): void {
+    this.globalService.clearCurrentUser();
+    this.router.navigate([""]);
+  }
 
 }

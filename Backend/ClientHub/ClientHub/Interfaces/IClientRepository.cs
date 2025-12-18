@@ -11,8 +11,8 @@ namespace ClientHub.Interfaces
         public Task<ResponseClientDto> UpdateClient(int id, DetailsClientDto client, CancellationToken ct);
 
         public Task<bool> DeleteClient(int id,CancellationToken ct);
-
-        
+        public Task<IEnumerable<SearchClientDto>> SearchClientsByName(string name,int agentId,CancellationToken ct);
+        public Task<IEnumerable<ResponseClientDto>> GetAllClients(CancellationToken ct);
         public Task<ResponseClientDto> GetClientById(int id, CancellationToken ct);
        
     }

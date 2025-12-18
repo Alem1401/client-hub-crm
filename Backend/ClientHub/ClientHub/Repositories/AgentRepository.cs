@@ -74,6 +74,16 @@ namespace ClientHub.Repositories
           return await _context.Agents.AnyAsync(a => a.Email == email, ct);
         }
 
-       
+        public async Task<List<ResponseAgentDTO>> GetAllAgentsForTesting(CancellationToken ct)
+        {
+            var agents = await _context.Agents.ToListAsync(ct);
+            return agents.Select(a => new ResponseAgentDTO
+            {
+                Id = a.Id,
+                FirstName = a.FirstName,
+                LastName = a.LastName,
+                Email = a.Email
+            }).ToList();
+        }
     }
 }

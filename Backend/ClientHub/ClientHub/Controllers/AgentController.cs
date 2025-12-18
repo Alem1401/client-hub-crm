@@ -43,5 +43,12 @@ namespace ClientHub.Controllers
         {
             return await _agentRepository.AgentExists(email, ct);
         }
+
+        [HttpGet("test/list-all")]
+        public async Task<ActionResult> ListAllAgents(CancellationToken ct)
+        {
+            var agents = await _agentRepository.GetAllAgentsForTesting(ct);
+            return Ok(agents);
+        }
     }
 }

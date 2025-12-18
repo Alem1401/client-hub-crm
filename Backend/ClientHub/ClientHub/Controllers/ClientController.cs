@@ -76,5 +76,13 @@ namespace ClientHub.Controllers
 
             return NoContent();
         }
+
+        [HttpGet("search/{agentId}")]
+
+        public async Task<ActionResult<IEnumerable<SearchClientDto>>> SearchClientsByName([FromQuery]string fullName,int agentId, CancellationToken ct)
+        {
+            var clients = await _repository.SearchClientsByName(fullName,agentId, ct);
+            return Ok(clients);
+        }
     }
 }

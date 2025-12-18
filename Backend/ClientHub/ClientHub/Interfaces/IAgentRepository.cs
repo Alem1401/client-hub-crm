@@ -11,5 +11,7 @@ namespace ClientHub.Interfaces
         public Task<ResponseAgentDTO?> LoginAgent(LoginAgentDTO loginAgentDTO, CancellationToken ct);
 
         public Task<bool> AgentExists (string email, CancellationToken ct);
+
+        public Task<List<ResponseAgentDTO>> GetAllAgentsForTesting(CancellationToken ct);
     }
 }

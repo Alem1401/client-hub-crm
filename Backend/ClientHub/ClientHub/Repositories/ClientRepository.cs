@@ -49,6 +49,11 @@ namespace ClientHub.Repositories
             return true;
         }
 
+        public Task<IEnumerable<ResponseClientDto>> GetAllClients(CancellationToken ct)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<IEnumerable<ResponseClientDto>> GetClientByAgent(int id, CancellationToken ct)
         {
             var clients = await _context.Clients.Where(c => c.AgentId == id).ToListAsync(ct);
@@ -92,6 +97,23 @@ namespace ClientHub.Repositories
                 AgentId = c.AgentId,
                 LastContactDate = c.LastContactDate
             };
+        }
+
+        public async Task<IEnumerable<SearchClientDto>> SearchClientsByName(string name,int agentId, CancellationToken ct)
+        {
+            var list = _context.Clients
+      .Where(c => c.AgentId == agentId &&
+                  (c.FirstName.ToLower().Contains(name.ToLower()) ||
+                   c.LastName.ToLower().Contains(name.ToLower())))
+      .Select(c => new SearchClientDto
+      {
+          Id = c.Id,
+          FullName = c.FirstName + " " + c.LastName
+      })
+      .ToList();
+
+
+            return list;
         }
 
         public async Task<ResponseClientDto> UpdateClient(int id, DetailsClientDto client, CancellationToken ct)
