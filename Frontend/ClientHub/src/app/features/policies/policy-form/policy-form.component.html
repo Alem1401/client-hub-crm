@@ -48,21 +48,64 @@
       <div class="form-section" *ngIf="selectedInsuranceType">
         <h3 class="section-title">General Information</h3>
         
-        <div class="form-row">
-          <div class="form-group">
-            <label for="clientId" class="form-label required">Client ID</label>
-            <input 
-              type="number" 
-              id="clientId" 
-              formControlName="clientId"
-              class="form-control"
-              placeholder="Enter client ID"
-              [class.is-invalid]="isFieldInvalid('clientId')">
-            <span class="error-message" *ngIf="isFieldInvalid('clientId')">
-              {{ getErrorMessage('clientId') }}
-            </span>
-          </div>
+        <!-- Client Selection -->
+        <div class="form-group">
+          <label for="clientId" class="form-label required">Select Client</label>
+          <div class="search-container">
+            <div class="search-input-wrapper">
+              <div class="search-field-wrapper">
+                <mat-icon class="search-icon">search</mat-icon>
+                <input 
+                  type="text" 
+                  id="clientSearch"
+                  class="form-control search-input"
+                  placeholder="Search for clients by name..."
+                  [(ngModel)]="searchQuery"
+                  [ngModelOptions]="{standalone: true}"
+                  (input)="onSearchInput()"
+                  (focus)="onSearchFocus()"
+                  (blur)="onSearchBlur()">
+                <button 
+                  type="button" 
+                  class="clear-button" 
+                  *ngIf="searchQuery" 
+                  (click)="clearSearch()">
+                  <mat-icon>close</mat-icon>
+                </button>
+              </div>
 
+              <!-- Search Suggestions Dropdown -->
+              <div class="search-suggestions" *ngIf="showSuggestions && suggestions.length > 0">
+                <div 
+                  class="suggestion-item" 
+                  *ngFor="let suggestion of suggestions"
+                  (mousedown)="selectSuggestion(suggestion)">
+                  <mat-icon class="suggestion-icon">person</mat-icon>
+                  <div class="suggestion-content">
+                    <span class="suggestion-name">{{ suggestion.fullName }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <button 
+              type="button" 
+              class="search-button" 
+              (click)="onSearch()">
+              <mat-icon>search</mat-icon>
+              Search
+            </button>
+          </div>
+          <span class="info-message" *ngIf="selectedClient">
+            <mat-icon>check_circle</mat-icon>
+            Selected: {{ selectedClient.fullName }}
+          </span>
+          <span class="error-message" *ngIf="isFieldInvalid('clientId')">
+            {{ getErrorMessage('clientId') }}
+          </span>
+        </div>
+
+        <div class="form-row">
           <div class="form-group">
             <label for="policyNumber" class="form-label required">Policy Number</label>
             <input 

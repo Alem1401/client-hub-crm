@@ -11,22 +11,26 @@ export class ClientService {
 
 
   getClientsByAgentId(id : number){
-    return this.http.get<ResponseClientDto[]>(`https://localhost:58878/api/Client/agent/${id}`)
+    return this.http.get<ResponseClientDto[]>(`https://localhost:57197/api/Client/agent/${id}`)
   }
 
   addClient(client : createUpdateClientDto){
-    return this.http.post(`https://localhost:58878/api/Client`,client)
+    return this.http.post(`https://localhost:57197/api/Client`,client)
   }
   
   getClientById(id : number){
-    return this.http.get<ResponseClientDto>(`https://localhost:58878/api/Client/${id}`)
+    return this.http.get<ResponseClientDto>(`https://localhost:57197/api/Client/${id}`)
   }
 
   deleteClient(id : number){
-   return this.http.delete(`https://localhost:58878/api/Client/${id}`)
+   return this.http.delete(`https://localhost:57197/api/Client/${id}`)
   }
 
   updateClient(client : createUpdateClientDto,id : number){
-    return this.http.put(`https://localhost:58878/api/Client/${id}`,client)
+    return this.http.put(`https://localhost:57197/api/Client/${id}`,client)
+  }
+
+  searchClients(name : string,id : number){
+    return this.http.get(`https://localhost:57197/api/Client/search/${id}?fullName=${name}`)
   }
 }

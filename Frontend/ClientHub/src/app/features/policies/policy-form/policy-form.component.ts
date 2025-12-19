@@ -1,6 +1,6 @@
 import { Component, OnInit,inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormGroup, FormControl, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CreateCarInsuranceDto } from '../../../dtos/policies/create-car-insurance.dto';
 import { CreatePropertyInsuranceDto } from '../../../dtos/policies/create-property-insurance.dto';
@@ -8,6 +8,8 @@ import { PolicyService } from '../../../services/policy-service';
 import { MatIconModule } from '@angular/material/icon';
 import { GlobalService } from '../../../services/global-service';
 import { responseAgentDto } from '../../../dtos/agent/response-agent.dto';
+import { ClientService } from '../../../services/client-service';
+import { searchClienttDto } from '../../../dtos/client/search-client.dto';
 
 @Component({
   selector: 'app-policy-form',
@@ -15,6 +17,7 @@ import { responseAgentDto } from '../../../dtos/agent/response-agent.dto';
   imports: [
     CommonModule, 
     ReactiveFormsModule, 
+    FormsModule,
     MatIconModule
   ],
   templateUrl: './policy-form.component.html',
@@ -36,17 +39,22 @@ export class PolicyFormComponent implements OnInit {
   categories = ['M1', 'M2', 'M3', 'N1', 'N2', 'N3', 'L'];
   colors = ['White', 'Black', 'Silver', 'Gray', 'Red', 'Blue', 'Green', 'Yellow', 'Brown', 'Other'];
 
+  // Client search properties
+  searchQuery: string = '';
+  showSuggestions: boolean = false;
+  suggestions: searchClienttDto[] = [];
+  selectedClient: searchClienttDto | null = null;
 
     private policyService = inject(PolicyService)
     private router = inject(Router)
     private global = inject(GlobalService)
+    private clientService = inject(ClientService)
     currentAgent : responseAgentDto | null = null;
   ngOnInit(): void {
     this.initializeForm();
     this.global.currentUser$.subscribe({
         next: cu => this.currentAgent = cu
     })
-
   }
 
   initializeForm(): void {
@@ -262,5 +270,59 @@ export class PolicyFormComponent implements OnInit {
     }
 
     console.log('Test data filled for:', type);
+  }
+
+  // Client search methods
+  onSearchInput(): void {
+    if (this.searchQuery.trim().length > 0 && this.currentAgent?.id) {
+      this.clientService.searchClients(this.searchQuery, this.currentAgent.id).subscribe({
+        next: (results: any) => {
+          console.log('Search results:', results);
+          this.suggestions = results;
+          this.showSuggestions = true;
+        },
+        error: (error) => {
+          console.error('Error searching clients:', error);
+          this.suggestions = [];
+        }
+      });
+    } else {
+      this.suggestions = [];
+      this.showSuggestions = false;
+    }
+  }
+
+  onSearchFocus(): void {
+    if (this.suggestions.length > 0) {
+      this.showSuggestions = true;
+    }
+  }
+
+  onSearchBlur(): void {
+    // Delay to allow click on suggestion
+    setTimeout(() => {
+      this.showSuggestions = false;
+    }, 200);
+  }
+
+  selectSuggestion(client: searchClienttDto): void {
+    this.selectedClient = client;
+    this.searchQuery = client.fullName;
+    this.policyForm.patchValue({ clientId: client.id });
+    this.showSuggestions = false;
+  }
+
+  clearSearch(): void {
+    this.searchQuery = '';
+    this.selectedClient = null;
+    this.suggestions = [];
+    this.showSuggestions = false;
+    this.policyForm.patchValue({ clientId: '' });
+  }
+
+  onSearch(): void {
+    if (this.searchQuery.trim() && this.currentAgent?.id) {
+      this.onSearchInput();
+    }
   }
 }

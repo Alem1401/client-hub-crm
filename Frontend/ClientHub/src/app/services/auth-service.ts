@@ -13,14 +13,14 @@ export class AuthService {
 
  userExists(email: string) {
   const encodedEmail = encodeURIComponent(email);
-  return this.http.get<boolean>(`https://localhost:58878/api/Agent/${encodedEmail}`);
+  return this.http.get<boolean>(`https://localhost:57197/api/Agent/${encodedEmail}`);
 }
 
 registerUser(user : registerAgentDto){
-  return this.http.post(`https://localhost:58878/api/Agent`,user);
+  return this.http.post(`https://localhost:57197/api/Agent`,user);
 }
 
 loginUser(user : loginAgentDto){
-  return this.http.post<responseAgentDto>(`https://localhost:58878/api/Agent/login`,user)
+  return this.http.post<responseAgentDto>(`https://localhost:57197/api/Agent/login`,user)
 }
 }

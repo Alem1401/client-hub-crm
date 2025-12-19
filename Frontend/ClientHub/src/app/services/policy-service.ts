@@ -9,7 +9,7 @@ import { InsuranceSummaryDto } from '../dtos/policies/insurance-summary.dto';
   providedIn: 'root'
 })
 export class PolicyService {
-  private apiUrl = 'https://localhost:58878/api'; // TODO: Update with your actual API URL
+  private apiUrl = 'https://localhost:57197/api'; // TODO: Update with your actual API URL
 
   constructor(private http: HttpClient) {}
 

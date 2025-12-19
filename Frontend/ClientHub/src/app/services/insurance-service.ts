@@ -10,6 +10,6 @@ export class InsuranceService {
 
 
   getInsurancesByAgent(id : number){
-    return this.http.get<InsuranceSummaryDto[]>(`https://localhost:58878/api/Insurance/agent/${id}`)
+    return this.http.get<InsuranceSummaryDto[]>(`https://localhost:57197/api/Insurance/agent/${id}`)
   }
 }
