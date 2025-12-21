@@ -1,95 +1,160 @@
-<div class="policy-list-container">
-  <mat-card class="policy-list-card">
-    <mat-card-header>
-      <mat-card-title>
-        <div class="header-section">
-          <div class="title-section">
-            <mat-icon class="header-icon">description</mat-icon>
-            <h2>Policy Management</h2>
-          </div>
-          <button mat-raised-button color="primary" class="add-policy-btn" [routerLink]="['form']">
-            <mat-icon>add</mat-icon>
-            Add New Policy
-          </button>
+<div class="list-container">
+  <!-- Header Section -->
+  <div class="page-header">
+    <div class="header-content">
+      <div class="header-left">
+        <div class="header-icon">
+          <mat-icon>description</mat-icon>
         </div>
-      </mat-card-title>
-    </mat-card-header>
-
-    <mat-card-content>
-      <!-- Search Section -->
-      <div class="search-section">
-        <mat-form-field appearance="outline" class="search-field">
-          <mat-label>Search policies</mat-label>
-          <input matInput placeholder="Search by policy number, type, or client" (input)="onSearch($event.target.value)">
-          <mat-icon matPrefix>search</mat-icon>
-        </mat-form-field>
+        <div class="header-text">
+          <h1>Policy Management</h1>
+          <p class="header-subtitle">Track and manage your insurance policies</p>
+        </div>
       </div>
+      <button mat-raised-button class="primary-btn" [routerLink]="['form']">
+        <mat-icon>add_circle</mat-icon>
+        Create New Policy
+      </button>
+    </div>
+  </div>
 
-      <!-- Table Section -->
-      <div class="table-container">
-        <table class="policy-table responsive-table">
-          <thead>
-            <tr>
-              <th>Policy Number</th>
-              <th>Policy Type</th>
-              <th>Client Name</th>
-              <th>End Date</th>
-              <th class="centered">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let insurance of pagedInsurances" class="policy-row">
-              <td><span class="policy-number">{{ insurance.policyNumber }}</span></td>
-              <td><mat-chip class="type-chip">{{ insurance.policyType }}</mat-chip></td>
-              <td>{{ insurance.clientName }}</td>
-              <td><span class="date-cell">{{ insurance.endDate | date:'MM/dd/yyyy' }}</span></td>
-              <td class="centered">
-                <div class="action-buttons">
-                  <button mat-icon-button color="primary" matTooltip="View Details" aria-label="View Details" (click)="onView(insurance)">
-                    <mat-icon>visibility</mat-icon>
-                  </button>
-                  <button mat-icon-button color="accent" matTooltip="Edit Policy" aria-label="Edit Policy" (click)="onEdit(insurance)">
-                    <mat-icon>edit</mat-icon>
-                  </button>
-                  <button mat-icon-button color="warn" matTooltip="Delete Policy" aria-label="Delete Policy" (click)="onDeleteClick(insurance)">
-                    <mat-icon>delete</mat-icon>
-                  </button>
+  <!-- Stats Summary -->
+  <div class="stats-row">
+    <div class="mini-stat">
+      <div class="mini-stat-icon green">
+        <mat-icon>folder_open</mat-icon>
+      </div>
+      <div class="mini-stat-content">
+        <span class="mini-stat-value">{{ totalLength }}</span>
+        <span class="mini-stat-label">Total Policies</span>
+      </div>
+    </div>
+    <div class="mini-stat">
+      <div class="mini-stat-icon blue">
+        <mat-icon>directions_car</mat-icon>
+      </div>
+      <div class="mini-stat-content">
+        <span class="mini-stat-value">{{ getCarPoliciesCount() }}</span>
+        <span class="mini-stat-label">Car Insurance</span>
+      </div>
+    </div>
+    <div class="mini-stat">
+      <div class="mini-stat-icon purple">
+        <mat-icon>home</mat-icon>
+      </div>
+      <div class="mini-stat-content">
+        <span class="mini-stat-value">{{ getPropertyPoliciesCount() }}</span>
+        <span class="mini-stat-label">Property Insurance</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Content Card -->
+  <div class="content-card">
+    <!-- Search and Filter Bar -->
+    <div class="toolbar">
+      <div class="search-wrapper">
+        <mat-icon class="search-icon">search</mat-icon>
+        <input 
+          type="text" 
+          class="search-input" 
+          placeholder="Search by policy number, type, or client..." 
+          (input)="onSearch($event.target.value)">
+      </div>
+    </div>
+
+    <!-- Table Section -->
+    <div class="table-wrapper">
+      <table class="data-table" *ngIf="insurances.length > 0">
+        <thead>
+          <tr>
+            <th>Policy Info</th>
+            <th>Client</th>
+            <th>Type</th>
+            <th>Expiry Date</th>
+            <th class="centered">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let insurance of pagedInsurances" class="table-row">
+            <td>
+              <div class="policy-cell">
+                <div class="policy-icon" [ngClass]="insurance.policyType?.toLowerCase() === 'car' ? 'car' : 'property'">
+                  <mat-icon>{{ insurance.policyType?.toLowerCase() === 'car' ? 'directions_car' : 'home' }}</mat-icon>
                 </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+                <div class="policy-info">
+                  <span class="policy-number">{{ insurance.policyNumber }}</span>
+                  <span class="policy-id">ID: {{ insurance.id }}</span>
+                </div>
+              </div>
+            </td>
+            <td>
+              <div class="client-name-cell">
+                <mat-icon>person</mat-icon>
+                <span>{{ insurance.clientName }}</span>
+              </div>
+            </td>
+            <td>
+              <div class="type-badge" [ngClass]="insurance.policyType?.toLowerCase() === 'car' ? 'car' : 'property'">
+                <mat-icon>{{ insurance.policyType?.toLowerCase() === 'car' ? 'directions_car' : 'home' }}</mat-icon>
+                <span>{{ insurance.policyType?.toLowerCase() === 'car' ? 'Car Insurance' : 'Property Insurance' }}</span>
+              </div>
+            </td>
+            <td>
+              <div class="date-cell">
+                <mat-icon>event</mat-icon>
+                <span>{{ insurance.endDate | date:'MMM dd, yyyy' }}</span>
+              </div>
+            </td>
+            <td class="centered">
+              <div class="action-buttons">
+                <button class="action-btn view" matTooltip="View Details" (click)="onView(insurance)">
+                  <mat-icon>visibility</mat-icon>
+                </button>
+                <button class="action-btn edit" matTooltip="Edit Policy" (click)="onEdit(insurance)">
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <button class="action-btn delete" matTooltip="Delete Policy" (click)="onDeleteClick(insurance)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
 
-        <!-- Confirmation Dialog -->
-        @if(showConfirmation){
-          <app-confirmation-window 
-            message="Are you sure you want to delete this insurance policy?" 
-            (cancel)="onCancelDelete()" 
-            (confirm)="onConfirmDelete()">
-          </app-confirmation-window>
-        }
-
-        <!-- Empty State -->
-        <div class="empty-state" *ngIf="insurances.length === 0">
-          <mat-icon class="empty-icon">description</mat-icon>
-          <h3>No Policies Found</h3>
-          <p>Start by adding your first policy to the system</p>
-          <button mat-raised-button color="primary" [routerLink]="['form']">
-            <mat-icon>add</mat-icon>
-            Add Policy
-          </button>
+      <!-- Empty State -->
+      <div class="empty-state" *ngIf="insurances.length === 0">
+        <div class="empty-icon">
+          <mat-icon>description</mat-icon>
         </div>
+        <h3>No Policies Found</h3>
+        <p>Start managing insurance policies by creating your first one</p>
+        <button mat-raised-button class="primary-btn" [routerLink]="['form']">
+          <mat-icon>add_circle</mat-icon>
+          Create Your First Policy
+        </button>
       </div>
+    </div>
 
-      <!-- Paginator -->
+    <!-- Paginator -->
+    <div class="paginator-wrapper" *ngIf="insurances.length > 0">
       <mat-paginator #paginator
         [length]="totalLength"
         [pageSize]="pageSize"
         [pageSizeOptions]="[10, 25, 50, 100]"
         (page)="onPageChange($event)"
-        showFirstLastButtons
-        class="policy-paginator">
+        showFirstLastButtons>
       </mat-paginator>
-    </mat-card-content>
-  </mat-card>
+    </div>
+  </div>
+
+  <!-- Confirmation Dialog -->
+  @if(showConfirmation){
+    <app-confirmation-window 
+      message="Are you sure you want to delete this insurance policy?" 
+      (cancel)="onCancelDelete()" 
+      (confirm)="onConfirmDelete()">
+    </app-confirmation-window>
+  }
 </div>

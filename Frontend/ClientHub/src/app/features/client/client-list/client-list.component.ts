@@ -49,7 +49,8 @@ export class ClientListComponent implements OnInit {
   pageSize = 10;
   pageIndex = 0;
 
-  confirmation : boolean = false;
+  showConfirmation: boolean = false;
+  clientToDelete: ResponseClientDto | null = null;
 
   clientService = inject(ClientService);
   globalService = inject(GlobalService);
@@ -106,17 +107,36 @@ export class ClientListComponent implements OnInit {
   onView(client: ResponseClientDto): void {
     this.router.navigate(['/dashboard/clients/view', client.id]);
   }
-       
 
-  onDelete(client: ResponseClientDto): void {
-  
-    this.clientService.deleteClient(client.id).subscribe({
+  onDeleteClick(client: ResponseClientDto): void {
+    this.clientToDelete = client;
+    this.showConfirmation = true;
+  }
+
+  onCancelDelete(): void {
+    this.showConfirmation = false;
+    this.clientToDelete = null;
+  }
+
+  onConfirmDelete(): void {
+    if (!this.clientToDelete) return;
+    
+    this.clientService.deleteClient(this.clientToDelete.id).subscribe({
       next: () => {
-        this.confirmation = false;
+        this.showConfirmation = false;
+        this.clientToDelete = null;
         this.loadClients();
+      },
+      error: (err) => {
+        console.error('Failed to delete client', err);
+        alert('Failed to delete client');
       }
     });
-  
-    
+  }
+
+  getRecentClientsCount(): number {
+    // Return count of clients added in the current month (placeholder logic)
+    // In a real app, you'd filter by createdAt date
+    return Math.min(this.clients.length, 5);
   }
 }

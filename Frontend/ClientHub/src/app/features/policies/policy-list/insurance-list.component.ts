@@ -184,4 +184,12 @@ export class InsuranceListComponent implements OnInit {
       error: (err) => console.error('Failed to read current user', err),
     });
   }
+
+  getCarPoliciesCount(): number {
+    return this.insurances.filter(i => i.policyType?.toLowerCase() === 'car').length;
+  }
+
+  getPropertyPoliciesCount(): number {
+    return this.insurances.filter(i => i.policyType?.toLowerCase() === 'property').length;
+  }
 }

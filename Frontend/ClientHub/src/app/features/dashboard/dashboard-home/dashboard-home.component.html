@@ -1,0 +1,305 @@
+<div class="dashboard-home">
+  <!-- Welcome Section -->
+  <div class="welcome-section">
+    <div class="welcome-content">
+      <h1>Welcome back, <span class="agent-name">{{currentAgent?.firstName}} {{currentAgent?.lastName}}</span></h1>
+      <p class="welcome-subtitle">Here's what's happening with your insurance portfolio today.</p>
+    </div>
+    <div class="welcome-date">
+      <mat-icon>calendar_today</mat-icon>
+      <span>December 21, 2025</span>
+    </div>
+  </div>
+
+  <!-- Stats Cards -->
+  <div class="stats-grid">
+    <div class="stat-card clients">
+      <div class="stat-icon">
+        <mat-icon>people</mat-icon>
+      </div>
+      <div class="stat-content">
+        <span class="stat-value">124</span>
+        <span class="stat-label">Total Clients</span>
+      </div>
+      <div class="stat-trend positive">
+        <mat-icon>trending_up</mat-icon>
+        <span>+12%</span>
+      </div>
+    </div>
+
+    <div class="stat-card policies">
+      <div class="stat-icon">
+        <mat-icon>description</mat-icon>
+      </div>
+      <div class="stat-content">
+        <span class="stat-value">287</span>
+        <span class="stat-label">Active Policies</span>
+      </div>
+      <div class="stat-trend positive">
+        <mat-icon>trending_up</mat-icon>
+        <span>+8%</span>
+      </div>
+    </div>
+
+    <div class="stat-card revenue">
+      <div class="stat-icon">
+        <mat-icon>payments</mat-icon>
+      </div>
+      <div class="stat-content">
+        <span class="stat-value">$45,230</span>
+        <span class="stat-label">Monthly Revenue</span>
+      </div>
+      <div class="stat-trend positive">
+        <mat-icon>trending_up</mat-icon>
+        <span>+15%</span>
+      </div>
+    </div>
+
+    <div class="stat-card expiring">
+      <div class="stat-icon warning">
+        <mat-icon>warning</mat-icon>
+      </div>
+      <div class="stat-content">
+        <span class="stat-value">18</span>
+        <span class="stat-label">Expiring Soon</span>
+      </div>
+      <div class="stat-trend negative">
+        <mat-icon>priority_high</mat-icon>
+        <span>Needs attention</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Actions -->
+  <div class="quick-actions">
+    <h2 class="section-title">
+      <mat-icon>flash_on</mat-icon>
+      Quick Actions
+    </h2>
+    <div class="actions-grid">
+      <a routerLink="/dashboard/clients/form" class="action-btn add-client">
+        <mat-icon>person_add</mat-icon>
+        <span>Add New Client</span>
+      </a>
+      <a routerLink="/dashboard/insurances/form" class="action-btn add-policy">
+        <mat-icon>add_circle</mat-icon>
+        <span>Create Policy</span>
+      </a>
+      <a routerLink="/dashboard/clients" class="action-btn view-clients">
+        <mat-icon>groups</mat-icon>
+        <span>View All Clients</span>
+      </a>
+      <a routerLink="/dashboard/insurances" class="action-btn view-policies">
+        <mat-icon>folder_open</mat-icon>
+        <span>View All Policies</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Main Content Grid -->
+  <div class="content-grid">
+    <!-- Expiring Policies Section -->
+    <div class="content-card expiring-policies">
+      <div class="card-header">
+        <h2>
+          <mat-icon>schedule</mat-icon>
+          Policies Expiring Soon
+        </h2>
+        <a routerLink="/dashboard/insurances" class="view-all-link">
+          View All
+          <mat-icon>arrow_forward</mat-icon>
+        </a>
+      </div>
+      <div class="card-content">
+        <table class="expiring-table">
+          <thead>
+            <tr>
+              <th>Client</th>
+              <th>Policy Type</th>
+              <th>Policy #</th>
+              <th>Expiry Date</th>
+              <th>Days Left</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (insurance of expiringPolicies; track insurance.id) {
+            <tr [class.urgent]="getDaysLeft(insurance.endDate) <= 7">
+              <td>
+                <span class="client-name">{{ insurance.clientName }}</span>
+              </td>
+              <td>
+                <span class="policy-type" [ngClass]="insurance.policyType?.toLowerCase() === 'car' ? 'car' : 'property'">
+                  <mat-icon>{{ insurance.policyType?.toLowerCase() === 'car' ? 'directions_car' : 'home' }}</mat-icon>
+                  {{ insurance.policyType?.toLowerCase() === 'car' ? 'Car' : 'Property' }}
+                </span>
+              </td>
+              <td>{{ insurance.policyNumber }}</td>
+              <td>{{ insurance.endDate | date:'MMM dd, yyyy' }}</td>
+              <td>
+                <span class="days-badge" [ngClass]="getDaysBadgeClass(insurance.endDate)">
+                  {{ getDaysLeft(insurance.endDate) }} days
+                </span>
+              </td>
+            </tr>
+            }
+            @if (expiringPolicies.length === 0) {
+            <tr>
+              <td colspan="5" style="text-align: center; padding: 40px; color: #718096;">
+                No policies expiring soon
+              </td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Right Sidebar -->
+    <div class="sidebar">
+      <!-- Recent Clients -->
+      <div class="content-card recent-clients">
+        <div class="card-header">
+          <h2>
+            <mat-icon>person_add</mat-icon>
+            Recent Clients
+          </h2>
+          <a routerLink="/dashboard/clients" class="view-all-link">
+            View All
+            <mat-icon>arrow_forward</mat-icon>
+          </a>
+        </div>
+        <div class="card-content">
+          <ul class="recent-list">
+            <li class="recent-item">
+              <div class="avatar">
+                <mat-icon>person</mat-icon>
+              </div>
+              <div class="item-info">
+                <span class="item-name">Anna Martinez</span>
+                <span class="item-detail">Added Dec 20, 2025</span>
+              </div>
+              <span class="item-badge new">New</span>
+            </li>
+            <li class="recent-item">
+              <div class="avatar">
+                <mat-icon>person</mat-icon>
+              </div>
+              <div class="item-info">
+                <span class="item-name">Robert Taylor</span>
+                <span class="item-detail">Added Dec 19, 2025</span>
+              </div>
+            </li>
+            <li class="recent-item">
+              <div class="avatar">
+                <mat-icon>person</mat-icon>
+              </div>
+              <div class="item-info">
+                <span class="item-name">Lisa Anderson</span>
+                <span class="item-detail">Added Dec 18, 2025</span>
+              </div>
+            </li>
+            <li class="recent-item">
+              <div class="avatar">
+                <mat-icon>person</mat-icon>
+              </div>
+              <div class="item-info">
+                <span class="item-name">James Thomas</span>
+                <span class="item-detail">Added Dec 17, 2025</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Policy Distribution -->
+      <div class="content-card policy-distribution">
+        <div class="card-header">
+          <h2>
+            <mat-icon>pie_chart</mat-icon>
+            Policy Distribution
+          </h2>
+        </div>
+        <div class="card-content">
+          <div class="distribution-stats">
+            <div class="distribution-item car">
+              <div class="distribution-header">
+                <mat-icon>directions_car</mat-icon>
+                <span>Car Insurance</span>
+              </div>
+              <div class="distribution-bar">
+                <div class="bar-fill" style="width: 65%;"></div>
+              </div>
+              <div class="distribution-values">
+                <span class="count">187 policies</span>
+                <span class="percentage">65%</span>
+              </div>
+            </div>
+            <div class="distribution-item property">
+              <div class="distribution-header">
+                <mat-icon>home</mat-icon>
+                <span>Property Insurance</span>
+              </div>
+              <div class="distribution-bar">
+                <div class="bar-fill" style="width: 35%;"></div>
+              </div>
+              <div class="distribution-values">
+                <span class="count">100 policies</span>
+                <span class="percentage">35%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Activity -->
+      <div class="content-card recent-activity">
+        <div class="card-header">
+          <h2>
+            <mat-icon>history</mat-icon>
+            Recent Activity
+          </h2>
+        </div>
+        <div class="card-content">
+          <ul class="activity-list">
+            <li class="activity-item">
+              <div class="activity-icon created">
+                <mat-icon>add_circle</mat-icon>
+              </div>
+              <div class="activity-info">
+                <span class="activity-text">New policy created for <strong>John Smith</strong></span>
+                <span class="activity-time">2 hours ago</span>
+              </div>
+            </li>
+            <li class="activity-item">
+              <div class="activity-icon updated">
+                <mat-icon>edit</mat-icon>
+              </div>
+              <div class="activity-info">
+                <span class="activity-text">Client <strong>Sarah Johnson</strong> updated</span>
+                <span class="activity-time">5 hours ago</span>
+              </div>
+            </li>
+            <li class="activity-item">
+              <div class="activity-icon renewed">
+                <mat-icon>autorenew</mat-icon>
+              </div>
+              <div class="activity-info">
+                <span class="activity-text">Policy renewed for <strong>Mike Brown</strong></span>
+                <span class="activity-time">Yesterday</span>
+              </div>
+            </li>
+            <li class="activity-item">
+              <div class="activity-icon created">
+                <mat-icon>person_add</mat-icon>
+              </div>
+              <div class="activity-info">
+                <span class="activity-text">New client <strong>Emily Davis</strong> added</span>
+                <span class="activity-time">Yesterday</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
