@@ -15,6 +15,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
+import { RouterModule } from '@angular/router';
 import { createUpdateClientDto } from '../../../dtos/client/create-update-client.dto';
 import { FormsModule } from '@angular/forms';
 import { GlobalService } from '../../../services/global-service';
@@ -39,6 +40,7 @@ import { ResponseClientDto } from '../../../dtos/client/response-client.dto';
     MatIconModule,
     MatDividerModule,
     FormsModule,
+    RouterModule,
   ],
   templateUrl: './client-form.component.html',
   styleUrls: ['./client-form.component.css'],
@@ -62,6 +64,13 @@ export class ClientFormComponent implements OnInit {
     this.globalService.currentUser$.subscribe({
       next: (data) => (this.currentAgent = data),
     });
+    
+    // Check if we're in view mode
+    const url = this.route.snapshot.url;
+    if (url.length > 0 && url[0].path === 'view') {
+      this.viewMode = true;
+    }
+    
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.clientId = Number(id);
@@ -71,6 +80,7 @@ export class ClientFormComponent implements OnInit {
   }
 
   editMode: boolean = false;
+  viewMode: boolean = false;
 
   clientId: number | null = null;
   clientService = inject(ClientService);
@@ -136,11 +146,11 @@ export class ClientFormComponent implements OnInit {
 
       if (this.editMode && this.clientId) {
         this.clientService.updateClient(finishedClient, this.clientId).subscribe({
-          next: () => this.router.navigate([".."],{relativeTo:this.route}),
+          next: () => this.router.navigate(['/dashboard/clients']),
         });
       } else {
         this.clientService.addClient(finishedClient).subscribe(
-          {next: () => this.router.navigate([".."],{relativeTo:this.route})}
+          {next: () => this.router.navigate(['/dashboard/clients'])}
         );
       }
 

@@ -7,6 +7,8 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class GlobalService {
 
+  readonly apiUrl = 'https://localhost:57197/api';
+
   private currentUser = new BehaviorSubject<responseAgentDto | null>(null);
   currentUser$ = this.currentUser.asObservable();
   private readonly STORAGE_KEY = 'currentUser';

@@ -23,7 +23,7 @@ namespace ClientHub.Controllers
         {
             try
             {
-               
+
                 if (!ModelState.IsValid)
                 {
                     return BadRequest(new
@@ -87,6 +87,47 @@ namespace ClientHub.Controllers
         public async Task<IEnumerable<ResponseCarInsuranceDto>> GetCarInsuranceByClient(int id, CancellationToken ct)
         {
             return await _repository.getCarInsuranceByClientId(id, ct);
-        }   
+        }
+
+        [HttpGet("{id}")]
+
+        public async Task<IActionResult> GetCarInsuranceById(int id, CancellationToken ct)
+        {
+            var result = await _repository.getCarInsuranceById(id, ct);
+            if (result == null)
+            {
+                return NotFound(new
+                {
+                    success = false,
+                    error = "Car insurance not found"
+                });
+            }
+            return Ok(
+
+               result
+            );
+        }
+
+        [HttpDelete("{id}")]
+
+        public async Task<IActionResult> DeleteCarInsurance(int id, CancellationToken ct)
+        {
+            try
+            {
+                var result = await _repository.DeleteCarInsurance(id, ct);
+                if (result)
+                {
+                    return Ok();
+                }
+                else
+                {
+                    return NotFound();
+                }
+            }
+            catch (Exception)
+            {
+                return StatusCode(500);
+            }
+        }
     }
 }

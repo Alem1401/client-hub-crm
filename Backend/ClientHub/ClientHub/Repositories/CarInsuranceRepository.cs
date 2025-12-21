@@ -214,5 +214,45 @@ namespace ClientHub.Repositories
 
             return response;
         }
+
+        public async Task<ResponseCarInsuranceDto?> getCarInsuranceById(int id, CancellationToken ct)
+        {
+            var carInsurance = await _context.Insurances
+                .OfType<CarInsurance>()
+                .AsNoTracking()
+                .FirstOrDefaultAsync(ci => ci.Id == id, ct);
+            if (carInsurance is null)
+            {
+                return null;
+            }
+            else
+            {
+                var response = new ResponseCarInsuranceDto
+                {
+                    Id = carInsurance.Id,
+                    Bonus = carInsurance.Bonus,
+                    ChassisNumber = carInsurance.ChassisNumber,
+                    Color = carInsurance.Color,
+                    VehicleType = carInsurance.VehicleType,
+                    Purpose = carInsurance.Purpose,
+                    Category = carInsurance.Category,
+                    RegistrationPlate = carInsurance.RegistrationPlate,
+                    ProductionYear = carInsurance.ProductionYear,
+                    PowerKw = carInsurance.PowerKw,
+                    EngineCcm = carInsurance.EngineCcm,
+                    Type = carInsurance.Type,
+                    StartDate = carInsurance.StartDate,
+                    EndDate = carInsurance.EndDate,
+                    PolicyNumber = carInsurance.PolicyNumber,
+                    TotalAmount = carInsurance.TotalAmount,
+                    Discount = carInsurance.Discount,
+                    Surcharge = carInsurance.Surcharge,
+                    Notes = carInsurance.Notes,
+                    ClientId = carInsurance.ClientId,
+                    AgentId = carInsurance.AgentId
+                };
+                return response;
+            }
+        }
     }
 }

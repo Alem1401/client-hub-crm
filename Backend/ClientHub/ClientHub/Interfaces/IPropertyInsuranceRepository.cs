@@ -12,6 +12,7 @@ namespace ClientHub.Interfaces
 
         public Task<bool> DeletePropertyInsurance(int id, CancellationToken ct);
 
+        public Task<ResponsePropertyInsuranceDTO?> GetPropertyInsuranceById (int id, CancellationToken ct);
 
     }
 }

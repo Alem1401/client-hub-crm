@@ -44,7 +44,7 @@ namespace ClientHub.Controllers
         {
             try
             {
-                var result = await _repository.GetPropertyInsuranceByIdAsync(id, ct);
+                var result = await _repository.GetPropertyInsuranceById(id, ct);
                 if (result == null)
                 {
                     return NotFound($"Property insurance with ID {id} not found.");

@@ -21,15 +21,17 @@ export const routes: Routes = [
     children: [
       { path: "", component: ClientListComponent },     
       { path: "form", component: ClientFormComponent },
-       { path: "form/:id", component: ClientFormComponent }
-     
+      { path: "form/:id", component: ClientFormComponent },
+      { path: "view/:id", component: ClientFormComponent }
     ]
   
   },
   {path:"insurances",
     children:[
       {path:"",component:InsuranceListComponent},
-      {path:"form",component:PolicyFormComponent}
+      {path:"form",component:PolicyFormComponent},
+      {path:"form/:type/:id",component:PolicyFormComponent},
+      {path:"view/:type/:id",component:PolicyFormComponent}
     ]
   }
 ]

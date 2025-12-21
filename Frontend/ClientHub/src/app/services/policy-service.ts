@@ -1,17 +1,23 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { CreateCarInsuranceDto } from '../dtos/policies/create-car-insurance.dto';
 import { CreatePropertyInsuranceDto } from '../dtos/policies/create-property-insurance.dto';
 import { InsuranceSummaryDto } from '../dtos/policies/insurance-summary.dto';
+import { GlobalService } from './global-service';
+import { ResponseCarInsuranceDto } from '../dtos/policies/response-car-insurance.dto';
+import { ResponsePropertyInsuranceDto } from '../dtos/policies/response-property-insurance.dto';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PolicyService {
-  private apiUrl = 'https://localhost:57197/api'; // TODO: Update with your actual API URL
+  private http = inject(HttpClient);
+  private globalService = inject(GlobalService);
 
-  constructor(private http: HttpClient) {}
+  private get apiUrl(): string {
+    return this.globalService.apiUrl;
+  }
 
   // Car Insurance
   createCarInsurance(carInsurance: CreateCarInsuranceDto): Observable<any> {
@@ -22,7 +28,7 @@ export class PolicyService {
     return this.http.get<any[]>(`${this.apiUrl}/CarInsurance`);
   }
 
-  getCarInsuranceById(id: number): Observable<any> {
+  getCarInsuranceById(id: number): Observable<ResponseCarInsuranceDto> {
     return this.http.get<any>(`${this.apiUrl}/CarInsurance/${id}`);
   }
 
@@ -34,7 +40,7 @@ export class PolicyService {
     return this.http.delete(`${this.apiUrl}/CarInsurance/${id}`);
   }
 
-  // Property Insurance
+ 
   createPropertyInsurance(propertyInsurance: CreatePropertyInsuranceDto): Observable<any> {
     return this.http.post(`${this.apiUrl}/PropertyInsurance`, propertyInsurance);
   }
@@ -43,8 +49,8 @@ export class PolicyService {
     return this.http.get<any[]>(`${this.apiUrl}/PropertyInsurance`);
   }
 
-  getPropertyInsuranceById(id: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/PropertyInsurance/${id}`);
+  getPropertyInsuranceById(id: number): Observable<ResponsePropertyInsuranceDto> {
+    return this.http.get<ResponsePropertyInsuranceDto>(`${this.apiUrl}/PropertyInsurance/${id}`);
   }
 
   updatePropertyInsurance(id: number, propertyInsurance: CreatePropertyInsuranceDto): Observable<any> {

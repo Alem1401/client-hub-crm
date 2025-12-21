@@ -8,12 +8,14 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatChipsModule } from '@angular/material/chips';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { InsuranceSummaryDto } from '../../../dtos/policies/insurance-summary.dto';
 import { InsuranceService } from '../../../services/insurance-service';
+import { PolicyService } from '../../../services/policy-service';
 import { responseAgentDto } from '../../../dtos/agent/response-agent.dto';
 import { GlobalService } from '../../../services/global-service';
 import { take } from 'rxjs/operators';
+import { ConfirmationWindowComponent } from '../../shared/confirmation-window/confirmation-window.component';
 
 @Component({
   selector: 'app-insurance-list',
@@ -29,6 +31,7 @@ import { take } from 'rxjs/operators';
     MatTooltipModule,
     MatChipsModule,
     RouterModule,
+    ConfirmationWindowComponent,
   ],
   templateUrl: './insurance-list.component.html',
   styleUrls: ['./insurance-list.component.css'],
@@ -44,8 +47,14 @@ export class InsuranceListComponent implements OnInit {
   // reference to the MatPaginator in the template (added as #paginator)
   @ViewChild('paginator') paginator: any;
   insuranceService = inject(InsuranceService);
+  policyService = inject(PolicyService);
   globalService = inject(GlobalService);
+  router = inject(Router);
   currentAgent: responseAgentDto | null = null;
+  
+  // Confirmation dialog properties
+  showConfirmation: boolean = false;
+  policyToDelete: InsuranceSummaryDto | null = null;
   ngOnInit(): void {
     // kick off loading; updatePagedInsurances will be called after data arrives
     this.loadInsurances();
@@ -94,18 +103,63 @@ export class InsuranceListComponent implements OnInit {
   }
 
   onView(policy: InsuranceSummaryDto): void {
- 
-    console.log('View insurance', policy);
+    // Navigate to view form with type and id
+    const type = policy.policyType?.toLowerCase() === 'car' ? 'car' : 'property';
+    this.router.navigate(['/dashboard/insurances/view', type, policy.id]);
   }
 
   onEdit(policy: InsuranceSummaryDto): void {
+    // Navigate to edit form with type and id
+    // policyType should be 'Car' or 'Property', convert to lowercase for route
+    const type = policy.policyType?.toLowerCase() === 'car' ? 'car' : 'property';
+    this.router.navigate(['/dashboard/insurances/form', type, policy.id]);
+  }
 
-    console.log('Edit insurance', policy);
+  onDeleteClick(policy: InsuranceSummaryDto): void {
+    this.policyToDelete = policy;
+    this.showConfirmation = true;
+  }
+
+  onCancelDelete(): void {
+    this.showConfirmation = false;
+    this.policyToDelete = null;
+  }
+
+  onConfirmDelete(): void {
+    if (!this.policyToDelete) return;
+    
+    const policy = this.policyToDelete;
+    const type = policy.policyType?.toLowerCase();
+    
+    if (type === 'car') {
+      this.policyService.deleteCarInsurance(policy.id).subscribe({
+        next: () => {
+          this.showConfirmation = false;
+          this.policyToDelete = null;
+          this.loadInsurances();
+        },
+        error: (err) => {
+          console.error('Failed to delete car insurance', err);
+          alert('Failed to delete car insurance');
+        }
+      });
+    } else {
+      this.policyService.deletePropertyInsurance(policy.id).subscribe({
+        next: () => {
+          this.showConfirmation = false;
+          this.policyToDelete = null;
+          this.loadInsurances();
+        },
+        error: (err) => {
+          console.error('Failed to delete property insurance', err);
+          alert('Failed to delete property insurance');
+        }
+      });
+    }
   }
 
   onDelete(policy: InsuranceSummaryDto): void {
- 
-    console.log('Delete insurance', policy);
+    this.onConfirmDelete();
   }
 
   loadInsurances() {

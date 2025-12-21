@@ -2,10 +2,10 @@
   <mat-card class="form-card">
     <mat-card-header class="form-header">
       <div class="header-content">
-        <mat-icon class="header-icon">person_add</mat-icon>
+        <mat-icon class="header-icon">{{ viewMode ? 'visibility' : (editMode ? 'edit' : 'person_add') }}</mat-icon>
         <div class="header-text">
-          <mat-card-title>Client Information</mat-card-title>
-          <mat-card-subtitle>Enter client details below</mat-card-subtitle>
+          <mat-card-title>{{ viewMode ? 'View Client' : (editMode ? 'Edit Client' : 'Client Information') }}</mat-card-title>
+          <mat-card-subtitle>{{ viewMode ? 'Client details (read-only)' : 'Enter client details below' }}</mat-card-subtitle>
         </div>
       </div>
     </mat-card-header>
@@ -14,6 +14,7 @@
 
     <mat-card-content class="form-content">
       <form [formGroup]="clientForm" (ngSubmit)="finishClient()">
+        <fieldset [disabled]="viewMode" class="form-fieldset">
       
         <div class="section-title">
           <mat-icon class="section-icon">badge</mat-icon>
@@ -124,16 +125,21 @@
             <mat-icon matPrefix>note</mat-icon>
           </mat-form-field>
         </div>
+        </fieldset>
         <mat-divider></mat-divider>
 
         <mat-card-actions class="form-actions">
-          <button mat-stroked-button type="button" class="cancel-button" (click)="clientForm.reset()">
-            <mat-icon>close</mat-icon>
-            Cancel
+          <button mat-stroked-button type="button" class="cancel-button" routerLink="/dashboard/clients">
+            <mat-icon>{{ viewMode ? 'arrow_back' : 'close' }}</mat-icon>
+            {{ viewMode ? 'Back' : 'Cancel' }}
           </button>
-          <button mat-raised-button color="primary" type="submit" class="submit-button" [disabled]="clientForm.invalid">
+          <button *ngIf="!viewMode" mat-raised-button color="primary" type="submit" class="submit-button" [disabled]="clientForm.invalid">
             <mat-icon>save</mat-icon>
-            Save Client
+            {{ editMode ? 'Update Client' : 'Save Client' }}
+          </button>
+          <button *ngIf="viewMode" mat-raised-button color="primary" type="button" class="submit-button" [routerLink]="['/dashboard/clients/form', clientId]">
+            <mat-icon>edit</mat-icon>
+            Edit Client
           </button>
         </mat-card-actions>
       </form>

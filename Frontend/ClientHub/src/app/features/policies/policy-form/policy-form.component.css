@@ -548,3 +548,56 @@ select.form-control option:disabled {
     justify-content: center;
   }
 }
+
+/* Readonly Field Styles */
+.readonly-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.readonly-field .form-control {
+  background-color: #f3f4f6;
+  border-color: #d1d5db;
+  color: #374151;
+  cursor: not-allowed;
+  padding-left: 40px;
+}
+
+.readonly-field .readonly-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #6b7280;
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+}
+
+.readonly-field {
+  position: relative;
+}
+
+.readonly-field input {
+  padding-left: 40px;
+}
+
+/* Fieldset styles for view mode */
+.form-fieldset {
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.form-fieldset:disabled {
+  opacity: 0.85;
+}
+
+.form-fieldset:disabled input,
+.form-fieldset:disabled select,
+.form-fieldset:disabled textarea {
+  cursor: not-allowed;
+  background-color: #f3f4f6;
+  color: #374151;
+}

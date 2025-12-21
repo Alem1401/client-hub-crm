@@ -10,5 +10,7 @@ namespace ClientHub.Interfaces
         public Task<IEnumerable<ResponseCarInsuranceDto>> getCarInsurancesByAgentId(int id, CancellationToken ct);
 
         public Task<IEnumerable<ResponseCarInsuranceDto>> getCarInsuranceByClientId(int id, CancellationToken ct); 
+
+        public Task<ResponseCarInsuranceDto?> getCarInsuranceById(int id, CancellationToken ct);
     }
 }

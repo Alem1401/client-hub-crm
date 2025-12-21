@@ -8,6 +8,7 @@ using ClientHub.DTOs.PropertyInsurance;
 using ClientHub.Interfaces;
 using ClientHub.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query.Internal;
 
 namespace ClientHub.Repositories
 {
@@ -164,8 +165,40 @@ namespace ClientHub.Repositories
             _context.Insurances.Remove(toDelete);
             await _context.SaveChangesAsync(ct);
             return true;
-        }   
+        }
+
+        public async Task<ResponsePropertyInsuranceDTO?>  GetPropertyInsuranceById(int id, CancellationToken ct)
+        {
+            var propertyInsurance =await  _context.Insurances.OfType<PropertyInsurance>()
+                .AsNoTracking()
+                .FirstOrDefaultAsync(pi => pi.Id == id, ct);
+            if (propertyInsurance is null)
+            {
+                return null;
+            }
+            else
+            {
+                var response = new ResponsePropertyInsuranceDTO
+                {
+                    Id = propertyInsurance.Id,
+                    AgentId = propertyInsurance.AgentId,
+                    ClientId = propertyInsurance.ClientId,
+                    StartDate = propertyInsurance.StartDate,
+                    EndDate = propertyInsurance.EndDate,
+                    PolicyNumber = propertyInsurance.PolicyNumber,
+                    TotalAmount = propertyInsurance.TotalAmount,
+                    Discount = propertyInsurance.Discount,
+                    Surcharge = propertyInsurance.Surcharge,
+                    Notes = propertyInsurance.Notes,
+                    Address = propertyInsurance.Address,
+                    City = propertyInsurance.City,
+                    Risks = propertyInsurance.Risks,
+                    SquareMeters = propertyInsurance.SquareMeters
+                };
+                return response;
+            }
 
 
+        }
     }
 }

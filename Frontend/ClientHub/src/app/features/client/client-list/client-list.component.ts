@@ -10,11 +10,14 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatChipsModule } from '@angular/material/chips';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { ResponseClientDto } from '../../../dtos/client/response-client.dto';
 import { ClientService } from '../../../services/client-service';
+import { GlobalService } from '../../../services/global-service';
 import { ConfirmationWindowComponent } from '../../shared/confirmation-window/confirmation-window.component';
+import { responseAgentDto } from '../../../dtos/agent/response-agent.dto';
+import { take } from 'rxjs/operators';
 
 
 
@@ -49,15 +52,29 @@ export class ClientListComponent implements OnInit {
   confirmation : boolean = false;
 
   clientService = inject(ClientService);
+  globalService = inject(GlobalService);
   dialog = inject(MatDialog);
+  router = inject(Router);
+  currentAgent: responseAgentDto | null = null;
   displayedColumns: string[] = ['id', 'firstName', 'lastName', 'email', 'phoneNumber', 'city', 'actions'];
 
   ngOnInit(): void {
-    this.clientService.getClientsByAgentId(1).subscribe({
-      next: (response) => {
-        this.clients = response;
-        this.filteredClients = response;
-        this.updatePagedClients();
+    this.loadClients();
+  }
+
+  loadClients(): void {
+    this.globalService.currentUser$.pipe(take(1)).subscribe({
+      next: (agent) => {
+        this.currentAgent = agent;
+        if (!this.currentAgent) return;
+        
+        this.clientService.getClientsByAgentId(this.currentAgent.id).subscribe({
+          next: (response) => {
+            this.clients = response;
+            this.filteredClients = response;
+            this.updatePagedClients();
+          }
+        });
       }
     });
   }
@@ -87,15 +104,17 @@ export class ClientListComponent implements OnInit {
   }
 
   onView(client: ResponseClientDto): void {
-    // TODO: Implement view logic (e.g., open dialog or navigate)
-    console.log('View client', client);
+    this.router.navigate(['/dashboard/clients/view', client.id]);
   }
        
 
   onDelete(client: ResponseClientDto): void {
   
     this.clientService.deleteClient(client.id).subscribe({
-      next: () => this.confirmation = false
+      next: () => {
+        this.confirmation = false;
+        this.loadClients();
+      }
     });
   
     

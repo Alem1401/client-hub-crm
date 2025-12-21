@@ -3,10 +3,10 @@
     <div class="form-header">
       <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
         <h2 class="form-title">
-          <mat-icon class="form-title-icon">add_circle</mat-icon>
-          Create New Insurance Policy
+          <mat-icon class="form-title-icon">{{ viewMode ? 'visibility' : (editMode ? 'edit' : 'add_circle') }}</mat-icon>
+          {{ viewMode ? 'View Insurance Policy' : (editMode ? 'Edit Insurance Policy' : 'Create New Insurance Policy') }}
         </h2>
-        <div style="display: flex; gap: 10px;">
+        <div style="display: flex; gap: 10px;" *ngIf="!editMode && !viewMode">
           <button type="button" class="test-btn" (click)="fillTestData('car')" title="Fill with test car data">
             <mat-icon>directions_car</mat-icon>
             Test Car
@@ -21,13 +21,32 @@
     
     <div class="form-body">
       <form [formGroup]="policyForm" (ngSubmit)="onSubmit()">
+        <fieldset [disabled]="viewMode" class="form-fieldset">
       
         <!-- Insurance Type Selection - Always Visible -->
         <div class="form-section">
           <h3 class="section-title">Policy Type</h3>
           <div class="form-group">
             <label for="insuranceType" class="form-label required">Insurance Type</label>
+            
+            <!-- Readonly display when editing -->
+            <div *ngIf="editMode" class="readonly-field">
+              <mat-icon class="readonly-icon">{{ selectedInsuranceType === 'car' ? 'directions_car' : 'home' }}</mat-icon>
+              <input 
+                type="text" 
+                class="form-control"
+                [value]="selectedInsuranceType === 'car' ? 'Car Insurance' : 'Property Insurance'"
+                readonly
+                disabled>
+              <span class="info-message">
+                <mat-icon>info</mat-icon>
+                Insurance type cannot be changed when editing
+              </span>
+            </div>
+
+            <!-- Selectable when creating -->
             <select 
+              *ngIf="!editMode"
               id="insuranceType" 
               formControlName="insuranceType"
               (change)="onInsuranceTypeChange($any($event.target).value)"
@@ -38,7 +57,7 @@
                 {{ type.label }}
               </option>
             </select>
-            <span class="error-message" *ngIf="isFieldInvalid('insuranceType')">
+            <span class="error-message" *ngIf="isFieldInvalid('insuranceType') && !editMode">
               {{ getErrorMessage('insuranceType') }}
             </span>
           </div>
@@ -48,10 +67,27 @@
       <div class="form-section" *ngIf="selectedInsuranceType">
         <h3 class="section-title">General Information</h3>
         
-        <!-- Client Selection -->
+        <!-- Client Selection - Editable when creating, readonly when editing -->
         <div class="form-group">
           <label for="clientId" class="form-label required">Select Client</label>
-          <div class="search-container">
+          
+          <!-- Readonly display when editing -->
+          <div *ngIf="editMode" class="readonly-field">
+            <mat-icon class="readonly-icon">person</mat-icon>
+            <input 
+              type="text" 
+              class="form-control"
+              [value]="clientName || searchQuery"
+              readonly
+              disabled>
+            <span class="info-message">
+              <mat-icon>info</mat-icon>
+              Client cannot be changed when editing
+            </span>
+          </div>
+
+          <!-- Searchable when creating -->
+          <div class="search-container" *ngIf="!editMode">
             <div class="search-input-wrapper">
               <div class="search-field-wrapper">
                 <mat-icon class="search-icon">search</mat-icon>
@@ -96,7 +132,7 @@
               Search
             </button>
           </div>
-          <span class="info-message" *ngIf="selectedClient">
+          <span class="info-message" *ngIf="selectedClient && !editMode">
             <mat-icon>check_circle</mat-icon>
             Selected: {{ selectedClient.fullName }}
           </span>
@@ -466,16 +502,21 @@
           </span>
         </div>
       </div>
+      </fieldset>
 
       <!-- Form Actions -->
       <div class="form-actions" *ngIf="selectedInsuranceType">
         <button type="button" class="btn btn-secondary" (click)="onCancel()">
-          <mat-icon>close</mat-icon>
-          Cancel
+          <mat-icon>{{ viewMode ? 'arrow_back' : 'close' }}</mat-icon>
+          {{ viewMode ? 'Back' : 'Cancel' }}
         </button>
-        <button type="submit" class="btn btn-primary" [disabled]="isSubmitting">
+        <button *ngIf="!viewMode" type="submit" class="btn btn-primary" [disabled]="isSubmitting">
           <mat-icon>save</mat-icon>
-          {{ isSubmitting ? 'Creating...' : 'Create Policy' }}
+          {{ isSubmitting ? (editMode ? 'Updating...' : 'Creating...') : (editMode ? 'Update Policy' : 'Create Policy') }}
+        </button>
+        <button *ngIf="viewMode" type="button" class="btn btn-primary" (click)="goToEdit()">
+          <mat-icon>edit</mat-icon>
+          Edit Policy
         </button>
       </div>
       </form>

@@ -1,7 +1,7 @@
 import { Component, OnInit,inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { CreateCarInsuranceDto } from '../../../dtos/policies/create-car-insurance.dto';
 import { CreatePropertyInsuranceDto } from '../../../dtos/policies/create-property-insurance.dto';
 import { PolicyService } from '../../../services/policy-service';
@@ -10,6 +10,8 @@ import { GlobalService } from '../../../services/global-service';
 import { responseAgentDto } from '../../../dtos/agent/response-agent.dto';
 import { ClientService } from '../../../services/client-service';
 import { searchClienttDto } from '../../../dtos/client/search-client.dto';
+import { ResponseCarInsuranceDto } from '../../../dtos/policies/response-car-insurance.dto';
+import { ResponsePropertyInsuranceDto } from '../../../dtos/policies/response-property-insurance.dto';
 
 @Component({
   selector: 'app-policy-form',
@@ -45,8 +47,16 @@ export class PolicyFormComponent implements OnInit {
   suggestions: searchClienttDto[] = [];
   selectedClient: searchClienttDto | null = null;
 
+  // Edit mode properties
+  editMode: boolean = false;
+  viewMode: boolean = false;
+  insuranceId: number | null = null;
+  insuranceType: string | null = null;
+  clientName: string = '';
+
     private policyService = inject(PolicyService)
     private router = inject(Router)
+    private route = inject(ActivatedRoute)
     private global = inject(GlobalService)
     private clientService = inject(ClientService)
     currentAgent : responseAgentDto | null = null;
@@ -54,7 +64,26 @@ export class PolicyFormComponent implements OnInit {
     this.initializeForm();
     this.global.currentUser$.subscribe({
         next: cu => this.currentAgent = cu
-    })
+    });
+
+    // Check if we're in view mode
+    const url = this.route.snapshot.url;
+    if (url.length > 0 && url[0].path === 'view') {
+      this.viewMode = true;
+    }
+
+    
+    const id = this.route.snapshot.paramMap.get('id');
+    const type = this.route.snapshot.paramMap.get('type');
+    if (id && type) {
+      this.editMode = true;
+      this.insuranceId = Number(id);
+      this.insuranceType = type;
+      this.selectedInsuranceType = type;
+      this.policyForm.patchValue({ insuranceType: type });
+      this.onInsuranceTypeChange(type);
+      this.loadInsuranceData();
+    }
   }
 
   initializeForm(): void {
@@ -116,6 +145,99 @@ export class PolicyFormComponent implements OnInit {
     propertyControls.forEach(control => this.policyForm.removeControl(control));
   }
 
+  loadInsuranceData(): void {
+    if (!this.insuranceId || !this.insuranceType) return;
+
+    if (this.insuranceType === 'car') {
+      this.policyService.getCarInsuranceById(this.insuranceId).subscribe({
+        next: (data: ResponseCarInsuranceDto) => {
+          this.patchCarInsuranceForm(data);
+        },
+        error: (err) => console.error('Failed to load car insurance', err)
+      });
+    } else if (this.insuranceType === 'property') {
+      this.policyService.getPropertyInsuranceById(this.insuranceId).subscribe({
+        next: (data: ResponsePropertyInsuranceDto) => {
+          this.patchPropertyInsuranceForm(data);
+        },
+        error: (err) => console.error('Failed to load property insurance', err)
+      });
+    }
+  }
+
+  patchCarInsuranceForm(data: ResponseCarInsuranceDto): void {
+    // Format dates for input[type="date"]
+    const startDate = data.startDate ? new Date(data.startDate).toISOString().split('T')[0] : '';
+    const endDate = data.endDate ? new Date(data.endDate).toISOString().split('T')[0] : '';
+
+    this.policyForm.patchValue({
+      insuranceType: 'car',
+      clientId: data.clientId,
+      policyNumber: data.policyNumber,
+      startDate: startDate,
+      endDate: endDate,
+      totalAmount: data.totalAmount,
+      discount: data.discount,
+      surcharge: data.surcharge,
+      notes: data.notes || '',
+      bonus: data.bonus,
+      chassisNumber: data.chassisNumber,
+      color: data.color,
+      vehicleType: data.vehicleType,
+      purpose: data.purpose,
+      category: data.category,
+      registrationPlate: data.registrationPlate,
+      productionYear: data.productionYear,
+      powerKw: data.powerKw,
+      engineCcm: data.engineCcm,
+      type: data.type
+    });
+
+    // Load client name from API
+    this.loadClientName(data.clientId);
+  }
+
+  patchPropertyInsuranceForm(data: ResponsePropertyInsuranceDto): void {
+    // Format dates for input[type="date"]
+    const startDate = data.startDate ? new Date(data.startDate).toISOString().split('T')[0] : '';
+    const endDate = data.endDate ? new Date(data.endDate).toISOString().split('T')[0] : '';
+
+    this.policyForm.patchValue({
+      insuranceType: 'property',
+      clientId: data.clientId,
+      policyNumber: data.policyNumber,
+      startDate: startDate,
+      endDate: endDate,
+      totalAmount: data.totalAmount,
+      discount: data.discount,
+      surcharge: data.surcharge,
+      notes: data.notes || '',
+      address: data.address,
+      city: data.city,
+      risks: data.risks,
+      squareMeters: data.squareMeters
+    });
+
+    // Load client name from API
+    this.loadClientName(data.clientId);
+  }
+
+  loadClientName(clientId: number): void {
+    this.clientService.getClientById(clientId).subscribe({
+      next: (client) => {
+        this.clientName = `${client.firstName} ${client.lastName}`;
+        this.searchQuery = this.clientName;
+        this.selectedClient = { id: clientId, fullName: this.clientName };
+      },
+      error: (err) => {
+        console.error('Failed to load client name', err);
+        this.clientName = `Client ID: ${clientId}`;
+        this.searchQuery = this.clientName;
+        this.selectedClient = { id: clientId, fullName: this.clientName };
+      }
+    });
+  }
+
   onSubmit(): void {
     
     if(this.selectedInsuranceType == 'car'){
@@ -145,17 +267,34 @@ export class PolicyFormComponent implements OnInit {
         }
         
         this.isSubmitting = true;
-        this.policyService.createCarInsurance(insurance).subscribe({
-          next: () => {
-            alert('Car insurance policy created successfully!');
-            this.router.navigate(['/dashboard/insurances']);
-          },
-          error: (error) => {
-            console.error('Error creating car insurance:', error);
-            alert('Failed to create car insurance policy');
-            this.isSubmitting = false;
-          }
-        });
+
+        if (this.editMode && this.insuranceId) {
+          // Update existing car insurance
+          this.policyService.updateCarInsurance(this.insuranceId, insurance).subscribe({
+            next: () => {
+              alert('Car insurance policy updated successfully!');
+              this.router.navigate(['/dashboard/insurances']);
+            },
+            error: (error) => {
+              console.error('Error updating car insurance:', error);
+              alert('Failed to update car insurance policy');
+              this.isSubmitting = false;
+            }
+          });
+        } else {
+          // Create new car insurance
+          this.policyService.createCarInsurance(insurance).subscribe({
+            next: () => {
+              alert('Car insurance policy created successfully!');
+              this.router.navigate(['/dashboard/insurances']);
+            },
+            error: (error) => {
+              console.error('Error creating car insurance:', error);
+              alert('Failed to create car insurance policy');
+              this.isSubmitting = false;
+            }
+          });
+        }
        }
     } else if(this.selectedInsuranceType == 'property'){
        if(this.policyForm.valid)
@@ -178,17 +317,34 @@ export class PolicyFormComponent implements OnInit {
         
         this.isSubmitting = true;
         console.log(insurance);
-        this.policyService.createPropertyInsurance(insurance).subscribe({
-          next: () => {
-            alert('Property insurance policy created successfully!');
-            this.router.navigate(['/dashboard/insurances']);
-          },
-          error: (error) => {
-            console.error('Error creating property insurance:', error);
-            alert('Failed to create property insurance policy');
-            this.isSubmitting = false;
-          }
-        });
+
+        if (this.editMode && this.insuranceId) {
+          // Update existing property insurance
+          this.policyService.updatePropertyInsurance(this.insuranceId, insurance).subscribe({
+            next: () => {
+              alert('Property insurance policy updated successfully!');
+              this.router.navigate(['/dashboard/insurances']);
+            },
+            error: (error) => {
+              console.error('Error updating property insurance:', error);
+              alert('Failed to update property insurance policy');
+              this.isSubmitting = false;
+            }
+          });
+        } else {
+          // Create new property insurance
+          this.policyService.createPropertyInsurance(insurance).subscribe({
+            next: () => {
+              alert('Property insurance policy created successfully!');
+              this.router.navigate(['/dashboard/insurances']);
+            },
+            error: (error) => {
+              console.error('Error creating property insurance:', error);
+              alert('Failed to create property insurance policy');
+              this.isSubmitting = false;
+            }
+          });
+        }
        }
     }
   }
@@ -215,7 +371,13 @@ export class PolicyFormComponent implements OnInit {
   }
 
   onCancel(): void {
-    this.router.navigate(['/dashboard/policies']);
+    this.router.navigate(['/dashboard/insurances']);
+  }
+
+  goToEdit(): void {
+    if (this.insuranceId && this.insuranceType) {
+      this.router.navigate(['/dashboard/insurances/form', this.insuranceType, this.insuranceId]);
+    }
   }
 
   // Test method - Fill form with sample data
