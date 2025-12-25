@@ -32,7 +32,7 @@
         <mat-icon>description</mat-icon>
       </div>
       <div class="stat-content">
-        <span class="stat-value">287</span>
+        <span class="stat-value">{{insurances.length}}</span>
         <span class="stat-label">Active Policies</span>
       </div>
       <div class="stat-trend positive">
@@ -119,18 +119,18 @@
               <th>Policy #</th>
               <th>Expiry Date</th>
               <th>Days Left</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
             @for (insurance of expiringPolicies; track insurance.id) {
-            <tr [class.urgent]="getDaysLeft(insurance.endDate) <= 7">
+            <tr [ngClass]="getRowClass(insurance)">
               <td>
-                <span class="client-name">{{ insurance.clientName }}</span>
               </td>
               <td>
-                <span class="policy-type" [ngClass]="insurance.policyType?.toLowerCase() === 'car' ? 'car' : 'property'">
-                  <mat-icon>{{ insurance.policyType?.toLowerCase() === 'car' ? 'directions_car' : 'home' }}</mat-icon>
-                  {{ insurance.policyType?.toLowerCase() === 'car' ? 'Car' : 'Property' }}
+                <span class="policy-type" [ngClass]="(insurance.policyType || '').toLowerCase() === 'car' ? 'car' : 'property'">
+                  <mat-icon>{{ (insurance.policyType || '').toLowerCase() === 'car' ? 'directions_car' : 'home' }}</mat-icon>
+                  {{ (insurance.policyType || '').toLowerCase() === 'car' ? 'Car' : 'Property' }}
                 </span>
               </td>
               <td>{{ insurance.policyNumber }}</td>
@@ -140,11 +140,17 @@
                   {{ getDaysLeft(insurance.endDate) }} days
                 </span>
               </td>
+              <td>
+                <button class="manage-policy-btn" (click)="managePolicy(insurance)">
+                  <mat-icon>edit</mat-icon>
+                  Manage
+                </button>
+              </td>
             </tr>
             }
             @if (expiringPolicies.length === 0) {
             <tr>
-              <td colspan="5" style="text-align: center; padding: 40px; color: #718096;">
+              <td colspan="6" style="text-align: center; padding: 40px; color: #718096;">
                 No policies expiring soon
               </td>
             </tr>
@@ -227,11 +233,11 @@
                 <span>Car Insurance</span>
               </div>
               <div class="distribution-bar">
-                <div class="bar-fill" style="width: 65%;"></div>
+                <div class="bar-fill" [style.width]="(totalPolicies ? ((carPolicies / totalPolicies) * 100) : 0) + '%'"></div>
               </div>
               <div class="distribution-values">
-                <span class="count">187 policies</span>
-                <span class="percentage">65%</span>
+                <span class="count">{{ carPolicies }} policies</span>
+                <span class="percentage">{{ (totalPolicies ? ((carPolicies / totalPolicies) * 100) : 0) | number:'1.0-0' }}%</span>
               </div>
             </div>
             <div class="distribution-item property">
@@ -240,11 +246,11 @@
                 <span>Property Insurance</span>
               </div>
               <div class="distribution-bar">
-                <div class="bar-fill" style="width: 35%;"></div>
+                <div class="bar-fill" [style.width]="(totalPolicies ? ((propertyPolicies / totalPolicies) * 100) : 0) + '%'"></div>
               </div>
               <div class="distribution-values">
-                <span class="count">100 policies</span>
-                <span class="percentage">35%</span>
+                <span class="count">{{propertyPolicies}} policies</span>
+                <span class="percentage">{{ (totalPolicies ? ((propertyPolicies / totalPolicies) * 100) : 0) | number:'1.0-0' }}%</span>
               </div>
             </div>
           </div>

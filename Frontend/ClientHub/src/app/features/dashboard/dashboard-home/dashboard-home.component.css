@@ -347,6 +347,70 @@
   color: #2d3748;
 }
 
+.client-name.clickable {
+  cursor: pointer;
+  color: #3182ce;
+  transition: color 0.2s ease;
+}
+
+.client-name.clickable:hover {
+  color: #2c5282;
+  text-decoration: underline;
+}
+
+/* Dynamic Row Classes */
+.expiring-table tbody tr.critical-row {
+  background: #fff5f5;
+}
+
+.expiring-table tbody tr.critical-row:hover {
+  background: #fed7d7;
+}
+
+.expiring-table tbody tr.warning-row {
+  background: #fffaf0;
+}
+
+.expiring-table tbody tr.warning-row:hover {
+  background: #feebc8;
+}
+
+.expiring-table tbody tr.safe-row {
+  background: #f0fff4;
+}
+
+.expiring-table tbody tr.safe-row:hover {
+  background: #c6f6d5;
+}
+
+/* Manage Policy Button */
+.manage-policy-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 12px;
+  background: #38a169;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.manage-policy-btn:hover {
+  background: #2f855a;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(56, 161, 105, 0.3);
+}
+
+.manage-policy-btn mat-icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+}
+
 .policy-type {
   display: inline-flex;
   align-items: center;

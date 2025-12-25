@@ -7,6 +7,10 @@
         public string PolicyType { get; set; }
         public string ClientName { get; set; }
         public DateTime EndDate { get; set; }
+         
+        public int clientId { get; set; }
+
+        public int DaysUntilExpiry => (EndDate - DateTime.Now).Days;
     }
 
 }

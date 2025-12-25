@@ -99,6 +99,11 @@ namespace ClientHub.Repositories
             };
         }
 
+        public Task<int> GetClientCountByAgentId(int agentId, CancellationToken ct)
+        {
+           return _context.Clients.CountAsync(c => c.AgentId == agentId, ct);
+        }
+
         public async Task<IEnumerable<SearchClientDto>> SearchClientsByName(string name,int agentId, CancellationToken ct)
         {
             var list = _context.Clients

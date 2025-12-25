@@ -28,7 +28,8 @@ namespace ClientHub.Repositories
                     ClientName = r.Client.FirstName + " " + r.Client.LastName,
                     EndDate = r.EndDate,
                     PolicyNumber = r.PolicyNumber,
-                    PolicyType = "Car"
+                    PolicyType = "Car",
+                    clientId = r.ClientId
                 })
                 .ToListAsync(ct);
 
@@ -42,7 +43,8 @@ namespace ClientHub.Repositories
                     ClientName = r.Client.FirstName + " " + r.Client.LastName,
                     EndDate = r.EndDate,
                     PolicyNumber = r.PolicyNumber,
-                    PolicyType = "Property"
+                    PolicyType = "Property",
+                    clientId = r.ClientId
                 })
                 .ToListAsync(ct);
 
@@ -62,7 +64,8 @@ namespace ClientHub.Repositories
                     ClientName = r.Client.FirstName + " " + r.Client.LastName,
                     EndDate = r.EndDate,
                     PolicyNumber = r.PolicyNumber,
-                    PolicyType = "Car"
+                    PolicyType = "Car",
+                    clientId = r.ClientId
                 })
                 .ToListAsync(ct);
 
@@ -76,7 +79,8 @@ namespace ClientHub.Repositories
                     ClientName = r.Client.FirstName + " " + r.Client.LastName,
                     EndDate = r.EndDate,
                     PolicyNumber = r.PolicyNumber,
-                    PolicyType = "Property"
+                    PolicyType = "Property",
+                    clientId = r.ClientId
                 })
                 .ToListAsync(ct);
 

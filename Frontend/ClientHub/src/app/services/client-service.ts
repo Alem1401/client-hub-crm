@@ -35,4 +35,8 @@ export class ClientService {
   searchClients(name : string,id : number){
     return this.http.get(`${this.globalService.apiUrl}/Client/search/${id}?fullName=${name}`)
   }
+
+  getClientCount(agentId : number){
+    return this.http.get<Number>(`${this.globalService.apiUrl}/Client/count/${agentId}`)
+  }
 }

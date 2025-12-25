@@ -84,5 +84,13 @@ namespace ClientHub.Controllers
             var clients = await _repository.SearchClientsByName(fullName,agentId, ct);
             return Ok(clients);
         }
+
+        [HttpGet("count/{agentId}")]
+
+        public async Task<ActionResult<int>> GetClientCountByAgentId(int agentId, CancellationToken ct)
+        {
+            var count = await _repository.GetClientCountByAgentId(agentId, ct);
+            return Ok(count);
+        }
     }
 }
