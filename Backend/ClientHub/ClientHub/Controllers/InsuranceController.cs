@@ -34,7 +34,7 @@ namespace ClientHub.Controllers
 
         [HttpGet("revenue/{agentid}")]
 
-        public async Task<IActionResult> getMonthlyRevenueByAgentId(int agentid, CancellationToken ct)
+        public async Task<IActionResult> GetMonthlyRevenueByAgentId(int agentid, CancellationToken ct)
         {
             var totalRevenue = await _repository.GetMonthlyRevenueByAgentId(agentid, ct);
             return Ok(totalRevenue);
