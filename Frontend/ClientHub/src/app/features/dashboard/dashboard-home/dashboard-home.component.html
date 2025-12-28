@@ -7,7 +7,7 @@
     </div>
     <div class="welcome-date">
       <mat-icon>calendar_today</mat-icon>
-      <span>December 21, 2025</span>
+      <span>{{currentDate}}</span>
     </div>
   </div>
 
@@ -18,7 +18,7 @@
         <mat-icon>people</mat-icon>
       </div>
       <div class="stat-content">
-        <span class="stat-value">124</span>
+        <span class="stat-value">{{totalClients}}</span>
         <span class="stat-label">Total Clients</span>
       </div>
       <div class="stat-trend positive">
@@ -46,7 +46,7 @@
         <mat-icon>payments</mat-icon>
       </div>
       <div class="stat-content">
-        <span class="stat-value">$45,230</span>
+        <span class="stat-value">{{totalRevenue}}</span>
         <span class="stat-label">Monthly Revenue</span>
       </div>
       <div class="stat-trend positive">
@@ -60,7 +60,7 @@
         <mat-icon>warning</mat-icon>
       </div>
       <div class="stat-content">
-        <span class="stat-value">18</span>
+        <span class="stat-value">{{expiringPolicies.length}}</span>
         <span class="stat-label">Expiring Soon</span>
       </div>
       <div class="stat-trend negative">
@@ -125,7 +125,9 @@
           <tbody>
             @for (insurance of expiringPolicies; track insurance.id) {
             <tr [ngClass]="getRowClass(insurance)">
-              <td>
+      
+              <td [routerLink]="['clients','view',insurance.clientId]">
+                {{insurance.clientName}}
               </td>
               <td>
                 <span class="policy-type" [ngClass]="(insurance.policyType || '').toLowerCase() === 'car' ? 'car' : 'property'">
@@ -176,43 +178,20 @@
         </div>
         <div class="card-content">
           <ul class="recent-list">
-            <li class="recent-item">
+            @for (client of recentClients; track $index) {
+                 <li class="recent-item">
               <div class="avatar">
                 <mat-icon>person</mat-icon>
               </div>
               <div class="item-info">
-                <span class="item-name">Anna Martinez</span>
-                <span class="item-detail">Added Dec 20, 2025</span>
-              </div>
-              <span class="item-badge new">New</span>
-            </li>
-            <li class="recent-item">
-              <div class="avatar">
-                <mat-icon>person</mat-icon>
-              </div>
-              <div class="item-info">
-                <span class="item-name">Robert Taylor</span>
-                <span class="item-detail">Added Dec 19, 2025</span>
+                <span class="item-name">{{client.fullName}}</span>
+                <span class="item-detail">Added {{ client.createdAt | date: 'dd MMM yyyy' }}
+ </span>
               </div>
             </li>
-            <li class="recent-item">
-              <div class="avatar">
-                <mat-icon>person</mat-icon>
-              </div>
-              <div class="item-info">
-                <span class="item-name">Lisa Anderson</span>
-                <span class="item-detail">Added Dec 18, 2025</span>
-              </div>
-            </li>
-            <li class="recent-item">
-              <div class="avatar">
-                <mat-icon>person</mat-icon>
-              </div>
-              <div class="item-info">
-                <span class="item-name">James Thomas</span>
-                <span class="item-detail">Added Dec 17, 2025</span>
-              </div>
-            </li>
+            }
+         
+           
           </ul>
         </div>
       </div>
@@ -257,55 +236,7 @@
         </div>
       </div>
 
-      <!-- Recent Activity -->
-      <div class="content-card recent-activity">
-        <div class="card-header">
-          <h2>
-            <mat-icon>history</mat-icon>
-            Recent Activity
-          </h2>
-        </div>
-        <div class="card-content">
-          <ul class="activity-list">
-            <li class="activity-item">
-              <div class="activity-icon created">
-                <mat-icon>add_circle</mat-icon>
-              </div>
-              <div class="activity-info">
-                <span class="activity-text">New policy created for <strong>John Smith</strong></span>
-                <span class="activity-time">2 hours ago</span>
-              </div>
-            </li>
-            <li class="activity-item">
-              <div class="activity-icon updated">
-                <mat-icon>edit</mat-icon>
-              </div>
-              <div class="activity-info">
-                <span class="activity-text">Client <strong>Sarah Johnson</strong> updated</span>
-                <span class="activity-time">5 hours ago</span>
-              </div>
-            </li>
-            <li class="activity-item">
-              <div class="activity-icon renewed">
-                <mat-icon>autorenew</mat-icon>
-              </div>
-              <div class="activity-info">
-                <span class="activity-text">Policy renewed for <strong>Mike Brown</strong></span>
-                <span class="activity-time">Yesterday</span>
-              </div>
-            </li>
-            <li class="activity-item">
-              <div class="activity-icon created">
-                <mat-icon>person_add</mat-icon>
-              </div>
-              <div class="activity-info">
-                <span class="activity-text">New client <strong>Emily Davis</strong> added</span>
-                <span class="activity-time">Yesterday</span>
-              </div>
-            </li>
-          </ul>
-        </div>
-      </div>
+      
     </div>
   </div>
 </div>

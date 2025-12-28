@@ -8,6 +8,8 @@ import { GlobalService } from '../../../services/global-service';
 import { InsuranceService } from '../../../services/insurance-service';
 import { InsuranceSummaryDto } from '../../../dtos/policies/insurance-summary.dto';
 import { responseAgentDto } from '../../../dtos/agent/response-agent.dto';
+import { ClientService } from '../../../services/client-service';
+import { RecentClientDto } from '../../../dtos/client/recent-client.dto';
 
 @Component({
   selector: 'app-dashboard-home',
@@ -25,6 +27,7 @@ import { responseAgentDto } from '../../../dtos/agent/response-agent.dto';
 export class DashboardHomeComponent  implements OnInit{
   globalService = inject(GlobalService);
   insuranceService = inject(InsuranceService);
+  clientService = inject(ClientService);
   router = inject(Router);
   insurances : InsuranceSummaryDto[] = [];
   expiringPolicies: InsuranceSummaryDto[] = [];
@@ -32,8 +35,18 @@ export class DashboardHomeComponent  implements OnInit{
   totalPolicies: number = 0;
   carPolicies: number = 0;
   propertyPolicies: number = 0;
-
+  totalClients : number = 0;
+  recentClients : RecentClientDto[] = [];
+  totalRevenue : number = 0;
+  currentDate: string = '';
   ngOnInit(): void {
+      const date = new Date();
+   
+    this.currentDate = date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
     this.globalService.currentUser$.subscribe({
       next: r => {
         this.currentAgent = r;
@@ -49,6 +62,21 @@ export class DashboardHomeComponent  implements OnInit{
               .filter(policy => policy.daysUntilExpiry <= 30 && policy.daysUntilExpiry >= 0)
               .sort((a, b) => new Date(a.endDate).getTime() - new Date(b.endDate).getTime())
               .slice(0, 5);
+
+              this.clientService.getClientCount(r?.id ? r.id : -1).subscribe({
+                next : response => this.totalClients = response
+
+              })
+
+              this.clientService.getRecentClients(r?.id ? r.id : -1).subscribe({next: response => {this.recentClients = response;
+                console.log(response);
+              }});
+
+              this.insuranceService.getMonthlyRevenueByAgent(r?.id ? r.id : -1).subscribe({
+                next: value => this.totalRevenue = value
+              })
+
+            
           }
         });
       }

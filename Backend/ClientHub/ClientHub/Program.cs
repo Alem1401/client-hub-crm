@@ -33,6 +33,7 @@ builder.Services.AddScoped<IClientRepository, ClientRepository>();
 builder.Services.AddScoped<ICarInsuranceRepository, CarInsuranceRepository>();
 builder.Services.AddScoped<IPropertyInsuranceRepository, PropertyInsuranceRepository>();
 builder.Services.AddScoped<IInsuranceRepository,InsuranceRepository>();
+builder.Services.AddScoped<IAnalyticsRepository, AnalyticsRepository>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

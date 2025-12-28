@@ -17,5 +17,7 @@ namespace ClientHub.Interfaces
 
         public Task<int> GetClientCountByAgentId (int agentId, CancellationToken ct);
 
+        public Task<RecentClientDto[]> GetRecentClients(int agentId, CancellationToken ct);
+
     }
 }

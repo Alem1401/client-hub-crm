@@ -86,5 +86,13 @@ namespace ClientHub.Repositories
 
             return carInsurances.Concat(propertyInsurances).ToList();
         }
+
+        public async Task<decimal> GetMonthlyRevenueByAgentId(int agentId, CancellationToken ct)
+        {
+            var insurance = _context.Insurances
+                .Where(i => i.AgentId == agentId && i.StartDate.Month == DateTime.Now.Month && i.StartDate.Year == DateTime.Now.Year)
+                .Select(i => i.TotalAmount);
+            return await insurance.SumAsync(ct);
+        }
     }
 }

@@ -3,6 +3,7 @@ import { Injectable,inject } from '@angular/core';
 import { createUpdateClientDto } from '../dtos/client/create-update-client.dto';
 import { ResponseClientDto } from '../dtos/client/response-client.dto';
 import { GlobalService } from './global-service';
+import { RecentClientDto } from '../dtos/client/recent-client.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -37,6 +38,10 @@ export class ClientService {
   }
 
   getClientCount(agentId : number){
-    return this.http.get<Number>(`${this.globalService.apiUrl}/Client/count/${agentId}`)
+    return this.http.get<number>(`${this.globalService.apiUrl}/Client/count/${agentId}`)
+  }
+
+  getRecentClients(agentId : number){
+    return this.http.get<RecentClientDto[]>(`${this.globalService.apiUrl}/Client/recent/${agentId}`);
   }
 }

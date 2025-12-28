@@ -8,6 +8,7 @@ import { ClientListComponent } from './features/client/client-list/client-list.c
 import { ClientFormComponent } from './features/client/client-form/client-form.component';
 import { InsuranceListComponent } from './features/policies/policy-list/insurance-list.component';
 import { PolicyFormComponent } from './features/policies/policy-form/policy-form.component';
+import { AnalyticsComponent } from './features/dashboard/analytics/analytics.component';
 
 export const routes: Routes = [
 {path : "register",component:RegisterComponent},
@@ -20,6 +21,10 @@ export const routes: Routes = [
   {
     path: "",
     component: DashboardHomeComponent
+  },
+  {
+    path: "analytics",
+    component: AnalyticsComponent
   },
   {
     path: "clients",

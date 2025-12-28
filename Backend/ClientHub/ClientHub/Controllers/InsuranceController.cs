@@ -30,5 +30,14 @@ namespace ClientHub.Controllers
             var insurances = await _repository.GetInsurancesByClientId(clientId, ct);
             return Ok(insurances);
         }
+
+
+        [HttpGet("revenue/{agentid}")]
+
+        public async Task<IActionResult> getMonthlyRevenueByAgentId(int agentid, CancellationToken ct)
+        {
+            var totalRevenue = await _repository.GetMonthlyRevenueByAgentId(agentid, ct);
+            return Ok(totalRevenue);
+        }
     }
 }

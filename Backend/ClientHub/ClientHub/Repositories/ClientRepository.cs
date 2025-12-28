@@ -104,6 +104,22 @@ namespace ClientHub.Repositories
            return _context.Clients.CountAsync(c => c.AgentId == agentId, ct);
         }
 
+        public Task<RecentClientDto[]> GetRecentClients(int agentId, CancellationToken ct)
+        {
+            var recentClients = _context.Clients.Where(c => c.AgentId == agentId)
+                .OrderByDescending(c => c.DateCreated)
+                .Take(4)
+                .Select(c => new RecentClientDto
+                {
+                    Id = c.Id,
+                    FullName = c.FirstName + " " + c.LastName,
+                    CreatedAt = c.DateCreated
+                })
+                .ToArrayAsync(ct);
+
+            return recentClients;
+        }
+
         public async Task<IEnumerable<SearchClientDto>> SearchClientsByName(string name,int agentId, CancellationToken ct)
         {
             var list = _context.Clients
