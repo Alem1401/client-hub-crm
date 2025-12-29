@@ -66,20 +66,6 @@
         <span>{{ formatPercentage(clientGrowth) }}</span>
       </div>
     </div>
-
-    <div class="stat-card renewal">
-      <div class="stat-icon">
-        <mat-icon>autorenew</mat-icon>
-      </div>
-      <div class="stat-content">
-        <span class="stat-value">{{ renewalRate | number:'1.0-0' }}%</span>
-        <span class="stat-label">Renewal Rate</span>
-      </div>
-      <div class="stat-trend" [ngClass]="renewalRate >= 70 ? 'positive' : 'warning'">
-        <mat-icon>{{ renewalRate >= 70 ? 'check_circle' : 'info' }}</mat-icon>
-        <span>{{ renewalRate >= 70 ? 'Healthy' : 'Needs focus' }}</span>
-      </div>
-    </div>
   </div>
 
   <!-- Main Content Grid -->
@@ -175,15 +161,6 @@
               <div class="summary-info">
                 <span class="summary-label">New This Month</span>
                 <span class="summary-value">{{ newPoliciesThisMonth }}</span>
-              </div>
-            </div>
-            <div class="summary-item">
-              <div class="summary-icon renewed">
-                <mat-icon>autorenew</mat-icon>
-              </div>
-              <div class="summary-info">
-                <span class="summary-label">Renewed</span>
-                <span class="summary-value">{{ renewedPolicies }}</span>
               </div>
             </div>
             <div class="summary-item">

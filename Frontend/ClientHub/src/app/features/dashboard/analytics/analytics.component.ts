@@ -34,21 +34,14 @@ export class AnalyticsComponent implements OnInit {
   globalService = inject(GlobalService);
   analyticsService = inject(AnalyticsService);
   currentAgent: responseAgentDto | null = null;
-
-  // Time period filter
   selectedPeriod: string = 'month';
-
-  // Revenue Analytics
   totalRevenue: number = 0;
   previousRevenue: number = 0;
   revenueGrowth: number = 0;
-
-  // Policy Analytics
+  
   totalPolicies: number = 156;
   newPoliciesThisMonth: number = 23;
-  renewedPolicies: number = 45;
   expiredPolicies: number = 12;
-  renewalRate: number = 78.9;
   averagePolicyValue: number = 806;
   carPolicies: number = 98;
   propertyPolicies: number = 58;
@@ -138,7 +131,7 @@ export class AnalyticsComponent implements OnInit {
     }
   };
 
-  // Client Acquisition Chart Configuration
+   
   clientChartData: ChartData<'bar'> = {
     labels: ['Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
     datasets: [{
@@ -226,16 +219,52 @@ export class AnalyticsComponent implements OnInit {
           }]
         };
 
-        // Calculate total revenue (sum of all months)
+        this.analyticsService.getClientsAddedMonthly(agentId).subscribe({
+          next: (data) => this.clientChartData = { ...this.clientChartData,
+            labels: data.months,
+            datasets: [{...this.clientChartData.datasets[0],
+            data:data.clientCount}
+            ]
+          }
+        });
+
+        this.analyticsService.getCarInsuranceCount(agentId).subscribe({
+          next: data => {
+            this.carPolicies = data;
+            this.updateDistributionChart();
+          }
+        });
+        
+        this.analyticsService.getPropertyInsuranceCount(agentId).subscribe({
+          next: data => {
+            this.propertyPolicies = data;
+            this.updateDistributionChart();
+          }
+        });
+
+        this.analyticsService.getAveragePolicyValue(agentId).subscribe({
+          next: data => this.averagePolicyValue = data
+        });
+
+        this.analyticsService.getTotalPolicies(agentId).subscribe({
+          next: data => this.totalPolicies = data
+        });
+
+        this.analyticsService.getNewThisMonthCount(agentId).subscribe({
+          next: data => this.newPoliciesThisMonth = data
+        });
+
+        this.analyticsService.getExpiredCount(agentId).subscribe({
+          next: data => this.expiredPolicies = data
+        });
+
         this.totalRevenue = data.monthlyRevenues.reduce((sum, val) => sum + val, 0);
 
-        // Calculate previous revenue (all months except last)
         if (data.monthlyRevenues.length > 1) {
           this.previousRevenue = data.monthlyRevenues
             .slice(0, -1)
             .reduce((sum, val) => sum + val, 0);
           
-          // Calculate growth based on last month vs previous month
           const lastMonth = data.monthlyRevenues[data.monthlyRevenues.length - 1] || 0;
           const prevMonth = data.monthlyRevenues[data.monthlyRevenues.length - 2] || 0;
           this.revenueGrowth = prevMonth > 0 
@@ -275,5 +304,15 @@ export class AnalyticsComponent implements OnInit {
   formatPercentage(value: number): string {
     const sign = value >= 0 ? '+' : '';
     return `${sign}${value.toFixed(1)}%`;
+  }
+
+  updateDistributionChart(): void {
+    this.distributionChartData = {
+      ...this.distributionChartData,
+      datasets: [{
+        ...this.distributionChartData.datasets[0],
+        data: [this.carPolicies, this.propertyPolicies]
+      }]
+    };
   }
 }

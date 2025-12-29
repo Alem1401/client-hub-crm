@@ -18,4 +18,6 @@ export class InsuranceService {
   getMonthlyRevenueByAgent(id : number){
     return this.http.get<number>(`${this.globalService.apiUrl}/Insurance/revenue/${id}`);
   }
+
+  
 }

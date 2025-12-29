@@ -72,7 +72,7 @@
 /* Stats Grid */
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 24px;
   margin-bottom: 32px;
 }
@@ -107,7 +107,6 @@
 .stat-card.revenue::before { background: #805ad5; }
 .stat-card.policies::before { background: #38a169; }
 .stat-card.clients::before { background: #3182ce; }
-.stat-card.renewal::before { background: #dd6b20; }
 
 .stat-icon {
   width: 56px;
@@ -131,11 +130,6 @@
 .stat-card.clients .stat-icon {
   background: #ebf8ff;
   color: #3182ce;
-}
-
-.stat-card.renewal .stat-icon {
-  background: #fffaf0;
-  color: #dd6b20;
 }
 
 .stat-icon mat-icon {
@@ -425,11 +419,6 @@
 .summary-icon.new {
   background: #c6f6d5;
   color: #276749;
-}
-
-.summary-icon.renewed {
-  background: #e9d8fd;
-  color: #6b46c1;
 }
 
 .summary-icon.expired {
